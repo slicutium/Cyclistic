@@ -1,0 +1,562 @@
+---
+title: <br> 
+  Share 
+author: "Pablo Solis"
+date: "2/10/2022"
+output:   
+  rmdformats::downcute:
+    downcute_theme: "chaos"
+    self_contained: true
+---
+
+
+```{r setup, include=FALSE}
+library(knitr)
+library(rmdformats)
+## Global options
+options(max.print = "75")
+opts_chunk$set(echo = FALSE,
+               prompt = FALSE,
+               comment = NA,
+               message = FALSE,
+               warning = FALSE, 
+               results = "hide")
+opts_knit$set(width=75)
+```
+
+# Share
+
+# 1 - Introduction
+
+Cyclistic launched in 2016 it's bike sharing services in the city of Chicago, USA. Since then, the program has grown to a fleet of 5,824 bicycles that are geotracked and locked into a network of 847 stations across Chicago. The bikes can be unlocked from one station and returned to another station in the system anytime.The majority of riders opt for traditional bikes; about 8% of riders use the assistive options. Cyclistic users are more likely to ride for leisure, but about 30% use them to commute to work each day.
+
+Cyclistic's finance analysts have concluded that annual members are much more profitable than casual riders. Although the pricing flexibility helps Cyclistic attract more customers, Cyclistic's director of Marketing believes that maximizing the number of annual members will be key to future growth.
+
+Cyclistic's director of Marketing has set a clear goal: Design marketing strategies aimed to convert casual riders into annual members. This analysis has been made to answer the following key question:
+
+* **How do annual members and casual riders use Cyclistic bikes differently.**
+
+# 2 - Prepare and Process
+
+Cyclistic have provided historical data to be analysed from their own databases. The license to use this dataset can be located [here](https://ride.divvybikes.com/data-license-agreement). For this analysis, data from February 2021 to January 2022 will be assessed. 
+There are around 200,000 - 800,000 entries for each month. Each month's data is saved in a MS Excel .csv file. R and Rstudio were the selected tools for this analysis for several reasons, begining with the big amount of data that needed to be processed, to personal reasons like the need to improve and extend my knowledge of R and Rstudio . The data contained in the files present almost no human error or data bias. The data is automatically generated from the bike's tracking system and since its generated internally it counts as a primary source. The only human manipulation of the data before its use for this analysis was to de-identify the data from the costumers to follow privacy regulations.
+
+After the monthly data was checked for column consistency and structure, it was merged together into a single file containing a years worth of data. This file was inspected for missing values, the team proceed to analyse the best course of action and after evaluating the options a decision was made to remove observations with missing values. A more detailed explanation could be found in the [Process](/process.html) section of this project.
+
+Furthermore, the data was cleaned by removing trips with a negative duration, all of the columns of the dataset were looked into to check for values out of range or abnormalities. 
+
+The cleaned dataset was saved in a file named “trip_data_cleaned.csv”, other datasets generated to produce this analysis were also saved for future use and analysis.
+
+```{r load packages}
+library(tidyverse)
+library(data.table)
+library(lubridate)
+library(scales)
+library(viridis)
+library(ggplot2)
+library(ggpubr)
+library(ggridges)
+library(leaflet)
+library(htmlwidgets)
+library(htmltools)
+```
+
+```{r load cleaned dataset}
+
+trip_data_cleaned <- fread("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/To build repository/trip_data_cleaned.csv")
+
+```
+
+# 3 - Rideable type analysis
+
+```{r Rideable type usage}
+
+# Shows a bar chart grouping rideable types and showing the number of rides, also the bars are divided by user type.
+
+rideable_user <- ggplot(data = trip_data_cleaned) + 
+  geom_bar(mapping = aes(x = str_to_title(gsub("_"," ",rideable_type)), fill = str_to_title(member_casual)), alpha = 0.6) +
+  labs(x = "Rideable types", y = "Number of Rides", fill = "User type") +
+  scale_fill_viridis(discrete = TRUE) +
+  scale_y_continuous(labels = label_number_si()) +
+  theme_light()
+
+```
+
+```{r rideables, results = "show"}
+
+rideable_user
+
+```
+
+The majority of trips are made by members.
+
+Classic bikes are the most used rideable type, followed by electric bikes and lastly, docked bikes.
+Members use **classic bikes** the most with almost 2 million trips in the last twelve months. Their second most used bike is the **electric bike**. There is no trips made by members with **docked bikes**
+
+Casual users made trips mostly on **classic bikes**. Their second most used bike is the **electric bike**. Casual users account for all trips made with **docked bikes**.
+
+# 4 - Date - Time Ridership Analysis
+
+```{r Rides per month}
+
+# Rides per month
+
+rides_month <- ggplot(data = trip_data_cleaned) +
+  geom_bar(mapping = aes(x = floor_date(started_at, unit = "month"), fill = str_to_title(member_casual)), 
+           position = "dodge", 
+           alpha = 0.6) + 
+  labs(x = element_blank(), y = "Number of Rides", fill = "User type") +
+  scale_x_datetime(date_labels = "%b %y", breaks = "month") +
+  scale_fill_viridis(discrete = TRUE) +
+  scale_y_continuous(labels = label_number_si()) +
+  theme_light()
+
+```
+
+```{r rides per month, results = "show"}
+
+rides_month
+
+```
+
+We can observe a higher demand during the warmer months, casual user ridership drops significantly during mid fall and winter.
+The month with lowest demand was February, the month with highest demand was August.
+
+
+```{r Preparing data to analyze trip date heatmap}
+
+# preparing data before loading
+
+trip_data_date <- trip_data_cleaned %>% 
+  select(day_of_week, week, year, date) %>%
+  group_by(date) %>% 
+  mutate(count_trips = n()) %>% 
+  distinct(date, .keep_all = TRUE)
+
+#To assign an order to the days of the week otherwise they are charted alphabetically
+trip_data_date$day_of_week <- ordered(trip_data_date$day_of_week, 
+  levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
+
+#We need to change the field week from character to numeric in order to be able to assign the scale for x axis
+trip_data_date$week <- as.numeric(trip_data_date$week)
+
+
+```
+
+```{r Trips per date heatmap}
+
+trips_per_date <- ggplot(data = trip_data_date) +
+  #colour will give us the white grid between the data spots
+  geom_tile(mapping = aes(x = week, y = day_of_week, fill = count_trips), colour = "white", na.rm = FALSE) +
+  #Using viridis colour pallet
+  scale_fill_viridis(option = "D", name = "Number of trips") +
+  #expand is used to close remove the extra space on the sides, the breaks will give us the spaces to place the months
+  scale_x_continuous(expand = c(0, 0),breaks = seq(01, 52, length = 12), 
+                     labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")) +
+  #to wrap the data by year, we set ncol to 1 so the other chart is presented below and not to the side.
+  facet_wrap(~year, ncol = 1) +
+  #to reverse the order of data in the y axis
+  scale_y_discrete(limits = rev) +
+  #to use a brighter theme
+  theme_light() +
+  #to remove the x axis label
+  labs(x = element_blank(), y = element_blank())
+  
+  
+```
+
+```{r trips per date, results = "show"}
+
+trips_per_date
+
+```
+
+We can observe that there is an increase in demand during the last weeks of May and continues until the last weeks of September.Also, the amount of trips increase during the weekends been Saturday the day with the highest demand. This reinforces the hypothesis that most of the trips are made for leisure purposes.
+
+
+```{r Preparing data to analyze trip/date/user heatmap}
+
+# preparing data before loading
+
+## we have to generate another set of data, the previous one had trip count by day, and I have not been able to use a dataset with separation by user type, the ##difficulty appears when trying to combine the trip numbers in order to plot a dataset combining both user types (like the plot above)
+## Because of this I need to generate another data set with the divided information in order to plot it.
+
+trip_data_date_user <- trip_data_cleaned %>% 
+  select(day_of_week, week, year, date, member_casual) %>%
+  group_by(date,member_casual) %>% 
+  mutate(count_trips = n()) %>% 
+  distinct(date, .keep_all = TRUE)
+
+#To assign an order to the days of the week otherwise they are charted alphabetically
+trip_data_date_user$day_of_week <- ordered(trip_data_date_user$day_of_week, 
+  levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
+
+#We need to change the field week from character to numeric in order to be able to assign the scale for x axis
+trip_data_date_user$week <- as.numeric(trip_data_date_user$week)
+
+# Data frame for members only 
+member_heat_map <- trip_data_date_user %>%
+  filter(member_casual == "member")
+
+#Data frame for casual riders only
+casual_heat_map <- trip_data_date_user %>%
+  filter(member_casual == "casual")
+
+```
+
+```{r member plot}
+
+member_plot <- ggplot(data = member_heat_map) +
+  #colour will give us the white grid between the data spots
+  geom_tile(mapping = aes(x = week, y = day_of_week, fill = count_trips), colour = "white", na.rm = FALSE) +
+  #Using viridis colour pallet
+  scale_fill_viridis(option = "D", name = "Number of trips") +
+  #expand is used to close remove the extra space on the sides, the breaks will give us the spaces to place the months
+  scale_x_continuous(expand = c(0, 0),breaks = seq(01, 52, length = 12), 
+                     labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")) +
+  #to wrap the data by year, we set ncol to 1 so the other chart is presented below and not to the side.
+  facet_wrap(~year , ncol = 1) +
+  #to reverse the order of data in the y axis
+  scale_y_discrete(limits = rev) +
+  #to use a brighter theme
+  theme_light() +
+  #to remove the x axis label
+  labs(x = element_blank(), y = element_blank()) +
+  labs(title = "Member Riders") 
+  
+```  
+
+```{r casual plot}
+
+casual_plot <- ggplot(data = casual_heat_map) +
+  #colour will give us the white grid between the data spots
+  geom_tile(mapping = aes(x = week, y = day_of_week, fill = count_trips), colour = "white", na.rm = FALSE) +
+  #Using viridis colour pallet
+  scale_fill_viridis(option = "D", name = "Number of trips") +
+  #expand is used to close remove the extra space on the sides, the breaks will give us the spaces to place the months
+  scale_x_continuous(expand = c(0, 0),breaks = seq(01, 52, length = 12), 
+                     labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")) +
+  #to wrap the data by year, we set ncol to 1 so the other chart is presented below and not to the side.
+  facet_wrap(~year , ncol = 1) +
+  #to reverse the order of data in the y axis
+  scale_y_discrete(limits = rev) +
+  #to use a brighter theme
+  theme_light() +
+  #to remove the x axis label
+  labs(x = element_blank(), y = element_blank()) +
+  labs(title = "Casual riders") 
+  
+```
+
+```{r merging plots}
+
+heatmap_user <- ggarrange(member_plot, casual_plot, ncol = 1, nrow = 2, common.legend = TRUE, legend = "right")
+
+```
+
+```{r heatmap users, results = "show"}
+
+heatmap_user
+
+```
+
+
+
+We can observe that casual riders use our services the most between the months of May and early October. During this period, their demand increases during the weekends been Saturday the day of the week with the highest demand.
+
+Members use Cyclistic bikes the most between early April up to late October. The maximum amount of trips per day is lower than casual riders, but their distribution is more uniform during their high demand season. September 1^st^ was the most popular day for member riders with 12714 trips. Casual riders saw their most popular day on July 17^th^ with 20268 trips. 
+
+
+
+```{r Trips per day of the week}
+
+# to graph trip count by day of the week by user type
+trips_user_wday <- trip_data_cleaned %>% 
+  select(day_of_week,member_casual) %>% 
+  group_by(day_of_week,member_casual) %>% 
+  mutate(count_trips = n()) %>%
+  distinct(day_of_week,member_casual, .keep_all = TRUE)
+
+trips_user_wday$day_of_week <- ordered(trips_user_wday$day_of_week, 
+                                      levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
+
+ggplot(data = trips_user_wday) +
+  geom_col(mapping = aes(x = day_of_week,y = count_trips, fill = str_to_title(member_casual)), 
+           position = "dodge",
+           alpha = .6)+
+  labs(x = element_blank(), y = "Number of Rides", fill = "User type")+
+  scale_fill_viridis(discrete = TRUE) +
+  scale_y_continuous(labels = label_number_si())
+
+```
+
+As observed before, members use Cyclistic bikes more uniformly during the week, having their most popular day Wednesday. Demand from casual riders increase during the weekend, been Saturday the day with the highest demand.
+
+```{r}
+trips_user_hour_wday <- trip_data_cleaned %>% 
+  select(day_of_week,member_casual,trip_length,started_at) %>%
+  mutate(started_time = format(trip_data_cleaned$started_at, "%H:%M")) %>% 
+  group_by(day_of_week,member_casual) 
+
+trips_user_hour_wday$day_of_week <- ordered(trips_user_hour_wday$day_of_week, 
+                                            levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
+
+str1 <- "2022-01-01"
+str2 <- ":00"
+
+trips_user_hour_wday$started_time <- as.POSIXct(strptime(paste(str1, trips_user_hour_wday$started_time, str2, sep = ""), "%Y-%m-%d %H:%M:%S"))
+
+```
+
+```{r}
+
+hour_ridges_plot <- ggplot(data = trips_user_hour_wday, mapping = aes(x = started_time, y = day_of_week)) +
+  geom_density_ridges(aes(fill = str_to_title(member_casual)), alpha = .6) +
+  scale_fill_viridis(discrete = TRUE) +
+  scale_x_datetime(expand = c(0, 0), labels = date_format("%H:%M", tz = Sys.timezone(location = TRUE)), breaks = "2 hour") +
+  labs(x = element_blank(), y = element_blank(), fill = "User Type") +
+  facet_wrap(~str_to_title(member_casual), ncol = 1)
+
+```
+
+```{r results = "show"}
+
+hour_ridges_plot
+
+```
+
+We can observe from the ridge plot that casual and member ridership during the weekends behave differently from the rest of the week. On Saturdays and Sundays the amount of trips made, increase by 9am and maintain the demand throughout daylight, ridership starts decreasing around 6pm.
+During the weekdays, casual riders increase their demand around 10am but at a lower rate compared to the weekends. Demand peaks between 4 and 6pm.
+Members have two peaks of demand during weekdays, the first one is in the morning, with an increased number of trips starting at 8am, and the second peak taking place in the evening. From 4pm to 6pm ridership reaches its highest value of the day.
+
+
+```{r}
+# Group the time variable by hours
+trips_user_hour_wday$by_hour <- cut(trips_user_hour_wday$started_time, breaks = "60 mins")
+
+# Create data frame which counts the number of trips per hour for casual and member riders
+hour_circular_chart <- trips_user_hour_wday %>%
+  group_by(by_hour,member_casual) %>%
+  mutate(numtrips_1000s = (n()/1000)) %>%
+  distinct(by_hour, member_casual, numtrips_1000s) %>% 
+  arrange(by_hour)
+
+```
+
+```{r}
+# Create a circular bar chart to show the popularity of each hour
+hour_circular_plot <- ggplot(hour_circular_chart) +
+  # Make custom panel grid 
+  geom_hline(aes(yintercept = y), data.frame(y = c(0:4) * 125), color = "lightgrey") + 
+  # Create a stacked bar char
+  geom_bar(aes(x = by_hour, y = numtrips_1000s, fill = str_to_title(member_casual)), stat="identity") +
+  # Create circular shape which starts in the mid-line  
+  coord_polar(start = -0.135, direction = 1) + 
+  ylim(-600, 500) +
+  # Add x-axis labels 
+  annotate(x = 1, y = -50, label = "00:00", geom = "text", size = 2) +
+  annotate(x = 2, y = -50, label = "01:00", geom = "text", size = 2) +
+  annotate(x = 3, y = -50, label = "02:00", geom = "text", size = 2) +
+  annotate(x = 4, y = -50, label = "03:00", geom = "text", size = 2) +
+  annotate(x = 5, y = -50, label = "04:00", geom = "text", size = 2) +
+  annotate(x = 6, y = -50, label = "05:00", geom = "text", size = 2) +
+  annotate(x = 7, y = -50, label = "06:00", geom = "text", size = 2) +
+  annotate(x = 8, y = -50, label = "07:00", geom = "text", size = 2) +
+  annotate(x = 9, y = -50, label = "08:00", geom = "text", size = 2) +
+  annotate(x = 10, y = -50, label = "09:00", geom = "text", size = 2) +
+  annotate(x = 11, y = -50, label = "10:00", geom = "text", size = 2) +
+  annotate(x = 12, y = -50, label = "11:00", geom = "text", size = 2) +
+  annotate(x = 13, y = -50, label = "12:00", geom = "text", size = 2) +
+  annotate(x = 14, y = -50, label = "13:00", geom = "text", size = 2) +
+  annotate(x = 15, y = -50, label = "14:00", geom = "text", size = 2) +
+  annotate(x = 16, y = -50, label = "15:00", geom = "text", size = 2) +
+  annotate(x = 17, y = -50, label = "16:00", geom = "text", size = 2) +
+  annotate(x = 18, y = -50, label = "17:00", geom = "text", size = 2) +
+  annotate(x = 19, y = -50, label = "18:00", geom = "text", size = 2) +
+  annotate(x = 20, y = -50, label = "19:00", geom = "text", size = 2) +
+  annotate(x = 21, y = -50, label = "20:00", geom = "text", size = 2) +
+  annotate(x = 22, y = -50, label = "21:00", geom = "text", size = 2) +
+  annotate(x = 23, y = -50, label = "22:00", geom = "text", size = 2) +
+  annotate(x = 24, y = -50, label = "23:00", geom = "text", size = 2) +
+  # Annotate y-axis scaling labels 
+  annotate(x = 2, y = 125, label = "125,000", geom = "text", size = 2.5, angle = 345) +
+  annotate(x = 2, y = 250, label = "250,000", geom = "text", size = 2.5, angle = 345) +
+  annotate(x = 2, y = 375, label = "375,000", geom = "text", size = 2.5, angle = 345) +
+  annotate(x = 2, y = 500, label = "500,000 trips", geom = "text", size = 2.5, angle = 345) +
+  scale_fill_viridis_d() +
+  theme_light() +
+  theme(axis.title = element_blank(), axis.ticks = element_blank(), axis.text = element_blank(), legend.position = "bottom", 
+        legend.title = element_blank())
+    
+```
+
+```{r results = "show"}
+
+hour_circular_plot
+
+```
+
+As seen in the previous plot, this circular hour plot confirms the preferred hours for our riders. The peak ridership happens between 4 and 6pm. There is a smaller peak in the morning, mostly generated by members.
+
+Member ridership patterns show that during regular office hours there is a sharp a decrease in demand, and there is a peak before 9am that might be generated by people using our bikes either for exercise or commute before work, and the second peak is most likely generated by people finishing their shift and either commuting back or using our bikes for exercise/leisure.
+
+# 5 - Station Ridership Analysis
+
+
+```{r Generating dataset to map}
+# Data frame that groups trips per station and lat/long
+
+map_data <- trip_data_cleaned %>%
+  select(start_station_name, start_lat, start_lng) %>%
+  group_by(start_station_name) %>%
+  mutate(count_trips = n()) %>%
+  distinct(start_station_name, .keep_all = TRUE)
+
+#sequence of values that will act as a key to show on the leaflet and group stations that have similar number of trips occurring closely
+mybins <- seq(0, 60000, by = 10000)
+
+#viridis palette to show how popular is the station
+station_palette <- colorBin(palette ="viridis", domain = map_data$count_trips, na.color = "transparent", bins = mybins)
+
+#text for interactive tooltip
+station_text <- paste("Station name: ", map_data$start_station_name, "<br/>", "Number of trips: ", map_data$count_trips, sep = "") %>%
+  lapply(htmltools::HTML)
+
+```
+
+```{r Leaflet}
+
+station_leaflet <- leaflet(map_data) %>% 
+  addTiles() %>%
+  # Coordinates over the city of Chicago searched in google
+  setView(lng = -87.6298, lat = 41.8781, zoom = 11) %>% 
+  # Setting map style 
+  addProviderTiles("Esri.WorldGrayCanvas") %>%
+  # Add circle markers to represent each station 
+  # & add a fill color to show the popularity of each station 
+  # & add an interactive tooltip for detail
+  addCircleMarkers(~start_lng, ~start_lat, fillColor = ~station_palette(count_trips), fillOpacity = 0.7, color = "white", 
+    radius = 8, stroke = FALSE, label = station_text, labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px" ), 
+    textsize = "13px", direction = "auto")) %>%
+  # Adding a legend 
+  addLegend(pal = station_palette, values = ~count_trips, opacity = 0.9, title = "Number of trips", position = "bottomright")
+```
+
+
+```{r Leaflet plot, results = "show"}
+
+station_leaflet
+
+```
+
+We can rapidly observe from this interactive map, that the most popular stations are located near the shoreline on the east side of the city. Stations with the most trips are located in the vicinity of touristic attractions like Chicago's History Museum, and 875 North Michigan Avenue. This corroborates that most of the trips made by Cyclistic users are for leisure purposes.
+
+A large proportion of stations expanding away from this area (east shoreline) show a smaller number of trips. A quick mouse over the stations show that the number of trips decrease as one moves farther away from the city center into the suburbs. This could confirm that the number of users that use Cyclistic's bikes to commute is smaller than the ones that use them for leisure.
+
+
+# 6 - Ride Length Analysis
+
+
+During the prepare and process stages we found trips with a duration that far exceeded most of the trips, even though the trips were made and correctly logged by our tracking systems, they are not the norm, and including them in our analysis could skew the results unfavorably.
+As a team we analysed these trips and the effect of removing them from the entire dataset. A decision was made to remove the outliers and proceed to analyse the resulting dataset. This decision was made after statistically finding the outlying values and finding a noticeable smaller standard deviation of the remaining dataset. 92.4% of the original dataset was used for the rest of the present analysis focusing on ride length data.
+
+```{r load no outliers dataset}
+trip_data_no_outliers <- fread("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/To build repository/trip_data_no_outliers.csv")
+
+```
+
+
+```{r Ride length day of the week}
+
+trips_length_wday <- trip_data_no_outliers %>% 
+  select(day_of_week,member_casual,trip_length) %>% 
+  group_by(day_of_week,member_casual) %>% 
+  mutate(count_trips = n(), average_length = mean(trip_length)) %>%
+  distinct(day_of_week,member_casual, .keep_all = TRUE)
+
+trips_length_wday$day_of_week <- ordered(trips_length_wday$day_of_week, 
+                                       levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday","Jan","Feb"))
+
+trips_length_wday_plot <- ggplot(data = trips_length_wday) +
+  geom_col(mapping = aes(x = day_of_week,y = (average_length/60), fill = str_to_title(member_casual)), alpha =.6 ,position = "dodge")+
+  labs(x = element_blank(), y = "Average Length in minutes", fill = "User type") +
+  scale_fill_viridis(discrete = TRUE)
+
+```
+
+```{r length wday plot, results = "show"}
+
+trips_length_wday_plot
+
+```
+
+Casual riders tend to take longer trips in average than Members, the average trip duration on weekdays is about 15 mins with an increase in length during the weekends. Members in the other hand have a lower ride length average during weekdays with a less significant increase of duration during the weekends.
+
+```{r}
+
+trips_length_week <- trip_data_no_outliers %>% 
+  select(week, year, member_casual,trip_length) %>% 
+  group_by(week, year, member_casual) %>% 
+  mutate(count_trips = n(), average_length = mean(trip_length)) %>%
+  distinct(week, year, member_casual, .keep_all = TRUE)
+
+trips_length_week$week <- as.numeric(trips_length_week$week)
+
+# To simplify the plot where a year change happens, we will add 53 to the week value of the following year
+# by this we avoid using a face_wrap() by year which will generate two bar graphs but the second one mostly
+# empty
+trips_length_week$week <- ifelse(trips_length_week$year == "2021", trips_length_week$week, trips_length_week$week + 53)
+
+```
+
+
+```{r}
+
+ride_length_week_area <- ggplot(data = trips_length_week, aes(x = week, y = (average_length/60), group = member_casual)) +
+  geom_area(aes(fill = member_casual),position = "identity", alpha = .5) +
+  labs(x = element_blank(), y = "Average Length in minutes", fill = "User type")+
+  scale_x_continuous(expand = c(0, 0),breaks = seq(01, 60, length = 14), 
+                     labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb")) +
+  scale_y_continuous(labels = label_number_si()) +
+  scale_fill_viridis(discrete = TRUE)+
+  theme_light()
+```
+
+```{r length week area plot, results = "show"}
+
+ride_length_week_area
+
+```
+
+Our weekly ride length average throughout the year gives us a more long term perspective, with the average trips lasting longer during the warmer months for casual riders. Members use our bikes more uniformly during the period been analysed with a minor decrease in ride duration during the colder months.
+
+
+# 7 - Conclusions
+
+After carefully reviewing the information obtained from our analysis, we could corroborate that accomplishing the goal set by our Marketing director based on Cyclistic's financial analyst findings is key for the future growth of the company.
+
+Classic bikes are the most popular among our users, both casual and member riders make the majority of their trips on this bikes. Electric bikes are equally used by casual and members. Docked bikes are used exclusively by casual riders.
+Focusing our efforts initially on Classic and Electric bike users would make the most impact. We should further analyse the reason why members opt out from using Docked bikes.
+
+Looking at seasonal data, we could identify our peak ridership months come with warmer temperatures. We would like to highlight that focusing our marketing efforts to convert casual riders into annual members during this period of time would most likely generate the best results. We would also suggest to complement our strategy with marketing focused on obtaining new members during the colder months when total ridership drops significantly.
+
+
+Ridership overall decreases during weekdays, and increase over the weekends. Working on encouraging casual users to use Cyclistic bikes during those days could increase the amount of times they use our services overall and would make it more efficient for them to become annual members. Showcasing events of interest for them could directly translate into more rides. Cross marketing opportunities could be developed with some of the most popular attractions of the city.
+
+Observing usage pattern by hour along the week, casual riders and members have a similar pattern, one noticeable difference is an increase on the number of trips during the morning for members. We could encourage casual riders to use our bikes during the morning.
+
+Following our station analysis, we can observe that ridership numbers increase when the station is close to touristic attractions and the east shoreline.
+
+Ride length information provides insight on user behavior, even though the differences on average ride length between member and casual riders are small, they are consistent. Casual riders have a longer trip length compared to members, member trip length is more uniform throughout the week.
+
+# 8 - Recommendations:
+
+Develop an app for Cyclistic users to manage their membership, buy tickets and lock/unlock Cyclistic bikes. This approach will allow Cyclistic to target our marketing efforts more accurately. This app could also function as a platform to showcase events of interest happening around their current location. This will encourage users to use Cyclistic bikes to reach those events. Further development of the app could result in a "Cyclistic community" and improve brand positioning.
+
+As mentioned on the previous recommendation, besides showcasing events nearby our riders through the app, we would also suggest adding an indicator on the app of how much the user has spent using our bikes in the present month and how much would they save with a membership. This will help our users understand the benefit of becoming members. Additionally, information about savings generated by using Cyclistic bikes vs Gas/public transport cost would reinforce the membership benefits.
+
+Develop a campaign focusing in a healthier lifestyle and its relationship with exercise, finally promoting the use of Cyclistic bikes to commute to and from work or classes. Adding an exercise tracker to our previously mentioned app would visually reinforce the benefits of using our bikes. Adding badges depending on the usage of our bike would add a gamification elements to the user experience.
+
+
+
+

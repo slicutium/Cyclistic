@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="generator" content="pandoc" />
+
+        <meta name="author" content="Pablo Solis" />
+    
+    
+    <title>  Process</title>
+
+        <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+        <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="site_libs/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="site_libs/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+        <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+        <script src="site_libs/navigation-1.1/tabsets.js"></script>
+        <link href="site_libs/magnific-popup-1.1.0/magnific-popup.css" rel="stylesheet" />
+        <script src="site_libs/magnific-popup-1.1.0/jquery.magnific-popup.min.js"></script>
+        <link href="site_libs/downcute-0.1/downcute.css" rel="stylesheet" />
+        <link href="site_libs/downcute-0.1/downcute_fonts_embed.css" rel="stylesheet" />
+        <link href="site_libs/downcute-0.1/downcute_chaos.css" rel="stylesheet" />
+        <script src="site_libs/downcute-0.1/downcute_styles.js"></script>
+        <script src="site_libs/downcute-0.1/downcute.js"></script>
+        <script src="site_libs/prism-1.22/prism.js"></script>
+    
+    
+    
+    
+    <!-- tabsets -->
+    <script>
+      $(document).ready(function () {
+	  window.buildTabsets("toc");
+      });
+      $(document).ready(function () {
+	  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+	      $(this).parent().toggleClass('nav-tabs-open')
+	  });
+      });
+    </script>
+
+    <!-- code folding -->
+    
+    <!-- code download -->
+    
+    <!-- tabsets dropdown -->
+
+    <style type="text/css">
+      .tabset-dropdown > .nav-tabs {
+	  display: inline-table;
+	  max-height: 500px;
+	  min-height: 44px;
+	  overflow-y: auto;
+	  background: white;
+	  border: 1px solid #ddd;
+	  border-radius: 4px;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+	  content: "&#xe258;";
+	  border: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active {
+	  display: block;
+      }
+
+      .tabset-dropdown > .nav-tabs > li.active a {
+  	  padding: 0 15px !important;
+      }
+
+      .tabset-dropdown > .nav-tabs > li > a,
+      .tabset-dropdown > .nav-tabs > li > a:focus,
+      .tabset-dropdown > .nav-tabs > li > a:hover {
+	  border: none;
+	  display: inline-block;
+	  border-radius: 4px;
+	  background-color: transparent;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+	  display: block;
+	  float: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li {
+	  display: none;
+	  margin-left: 0 !important;
+      }
+    </style>
+    
+</head>
+
+<body class="preload">
+
+   	
+               <!-- downcute start -->   
+   <div id="docute" class="Root theme-chaos">
+     <div class="Page layout-narrow">
+      <div class="Wrap">
+        <div class="Sidebar">
+          <div class="SidebarItems" id="toc">
+            <ul>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#preparing-our-working-environment.">1 - Preparing our working environment.</a></li>
+            <li><a href="#loading-data.">2 - Loading data.</a></li>
+            <li><a href="#handling-missing-data.">3 - Handling missing data.</a></li>
+            <li><a href="#integrity-check.">4 - Integrity check.</a></li>
+            <li><a href="#saving-our-data.">5 - Saving our data.</a></li>
+            </ul>
+          </div>
+          <div data-position="sidebar:post-end" class="InjectedComponents"><div class="dark-theme-toggler"><div class="toggle checked"><div class="toggle-track"><div class="toggle-track-check"><img  src="data:image/png;base64,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" role="presentation" style="pointer-events: none;" width="16" height="16"></div> <div class="toggle-track-x"><img src="data:image/png;base64,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" role="presentation" style="pointer-events: none;" width="16" height="16"></div></div> <div class="toggle-thumb"></div></div> <input type="checkbox" aria-label="Switch between Dark and Default theme" class="toggler-screen-reader-only"></div></div>
+        </div>
+        <div class="Main">
+          <div class="Content" id="content"> 
+   
+   
+      
+      <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Cyclistic Data Analysis</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li>
+        <a href="index.html">Home</a>
+      </li>
+      <li>
+        <a href="Ask.html">Ask</a>
+      </li>
+      <li>
+        <a href="Prepare.html">Prepare</a>
+      </li>
+      <li>
+        <a href="Process.html">Process</a>
+      </li>
+      <li>
+        <a href="Analyse.html">Analyse</a>
+      </li>
+      <li>
+        <a href="Share.html">Share</a>
+      </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container -->
+      </div><!--/.navbar -->
+        
+      <h1 class="title"><br> Process</h1>
+      
+      <p class="authors">
+           <span class="glyphicon glyphicon-user"></span> Pablo Solis
+      </p>
+         <p class="date"><span class="glyphicon glyphicon-calendar"></span> 2/10/2022</p>
+           
+
+   
+      
+   
+<!-- Don't indent these lines or it will mess pre blocks indentation --> 
+<div class="page-content has-page-title">
+<div id="process" class="section level1">
+<h1>Process</h1>
+<p>For this first data analysis project I will use R and Rstudio as my principal tool. Two main reasons for the selection, the first one is that is a new programming language for me. I was given a brief introduction to R and RStudio while completing the previous courses for the Professional Certificate, and will be using this opportunity to develop this new skills. The second reason is that the other tools presented during the course would not be able to handle the size of the data to analyze (Excel), or could not provide an efficient way to generate the visualizations required (SQL).</p>
+<p>After gathering the data and checking that its appropriate to provide a solution to the business task in hand, the next step is to process it. In this step we will make sure the data is not only reliable and comes from a trustworthy source, but that it is also in the correct format and it contains accurate data.</p>
+</div>
+<div id="preparing-our-working-environment." class="section level1">
+<h1>1 - Preparing our working environment.</h1>
+<div id="installing-required-packages." class="section level3">
+<h3>1.1 - Installing required packages.</h3>
+<pre class="r"><code># we use tidyverse for most of the data wrangling
+install.packages(&quot;tidyverse&quot;)
+# we use janitor for functions  get_dupes(), clean_names()
+install.packages(&quot;janitor&quot;)
+# we use skimr for skim_without_charts()
+install.packages(&quot;skimr&quot;)</code></pre>
+</div>
+<div id="loading-packages." class="section level3">
+<h3>1.2 - Loading packages.</h3>
+<pre class="r"><code>library(tidyverse)
+library(ggplot2)
+library(janitor)
+library(skimr)
+library(data.table)</code></pre>
+</div>
+</div>
+<div id="loading-data." class="section level1">
+<h1>2 - Loading data.</h1>
+<pre class="r"><code>trip_data_202201 &lt;- read_csv(&quot;C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202201-divvy-tripdata.csv&quot;)
+trip_data_202112 &lt;- read_csv(&quot;C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202112-divvy-tripdata.csv&quot;)
+trip_data_202111 &lt;- read_csv(&quot;C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202111-divvy-tripdata.csv&quot;)
+trip_data_202110 &lt;- read_csv(&quot;C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202110-divvy-tripdata.csv&quot;)
+trip_data_202109 &lt;- read_csv(&quot;C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202109-divvy-tripdata.csv&quot;)
+trip_data_202108 &lt;- read_csv(&quot;C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202108-divvy-tripdata.csv&quot;)
+trip_data_202107 &lt;- read_csv(&quot;C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202107-divvy-tripdata.csv&quot;)
+trip_data_202106 &lt;- read_csv(&quot;C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202106-divvy-tripdata.csv&quot;)
+trip_data_202105 &lt;- read_csv(&quot;C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202105-divvy-tripdata.csv&quot;)
+trip_data_202104 &lt;- read_csv(&quot;C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202104-divvy-tripdata.csv&quot;)
+trip_data_202103 &lt;- read_csv(&quot;C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202103-divvy-tripdata.csv&quot;)
+trip_data_202102 &lt;- read_csv(&quot;C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202102-divvy-tripdata.csv&quot;)</code></pre>
+<p>On the “Prepare” process we took a first glimpse at the structure of the data contained in the twelve files.</p>
+<p>We will combine all datasets to conduct our analysis, to do that we first have to make sure all the files have the same number/type of columns and the data is presented in the correct order.</p>
+<div id="column-consistency-check-between-the-files." class="section level3">
+<h3>2.1 - Column consistency check between the files.</h3>
+<pre class="r"><code>compare_df_cols(trip_data_202201, trip_data_202112, trip_data_202111, trip_data_202110, trip_data_202109, trip_data_202108, trip_data_202107, trip_data_202106, trip_data_202105, trip_data_202104, trip_data_202103, trip_data_202102, return = &quot;mismatch&quot;)</code></pre>
+<pre><code> [1] column_name      trip_data_202201 trip_data_202112 trip_data_202111
+ [5] trip_data_202110 trip_data_202109 trip_data_202108 trip_data_202107
+ [9] trip_data_202106 trip_data_202105 trip_data_202104 trip_data_202103
+[13] trip_data_202102
+&lt;0 rows&gt; (or 0-length row.names)</code></pre>
+<p>We obtain zero results, which indicates that all the columns are consistent on data type.</p>
+</div>
+<div id="checking-datasets-metadata." class="section level3">
+<h3>2.2 - Checking datasets metadata.</h3>
+<p>This step will go through the files, one by one, checking the datasets metadata. We will be using functions from the packages <strong><em>tidyverse</em></strong> and <strong><em>skimr</em></strong> to find valuable information <em>(like completion rate for example)</em>.</p>
+<p>We will be showing the reuslts for the first month only but during our analysis, all months were looked into.</p>
+<p>January 2022:</p>
+<pre class="r"><code>str(trip_data_202201)</code></pre>
+<pre><code>spec_tbl_df [103,770 x 13] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+ $ ride_id           : chr [1:103770] &quot;C2F7DD78E82EC875&quot; &quot;A6CF8980A652D272&quot; &quot;BD0F91DFF741C66D&quot; &quot;CBB80ED419105406&quot; ...
+ $ rideable_type     : chr [1:103770] &quot;electric_bike&quot; &quot;electric_bike&quot; &quot;classic_bike&quot; &quot;classic_bike&quot; ...
+ $ started_at        : POSIXct[1:103770], format: &quot;2022-01-13 11:59:47&quot; &quot;2022-01-10 08:41:56&quot; ...
+ $ ended_at          : POSIXct[1:103770], format: &quot;2022-01-13 12:02:44&quot; &quot;2022-01-10 08:46:17&quot; ...
+ $ start_station_name: chr [1:103770] &quot;Glenwood Ave &amp; Touhy Ave&quot; &quot;Glenwood Ave &amp; Touhy Ave&quot; &quot;Sheffield Ave &amp; Fullerton Ave&quot; &quot;Clark St &amp; Bryn Mawr Ave&quot; ...
+ $ start_station_id  : chr [1:103770] &quot;525&quot; &quot;525&quot; &quot;TA1306000016&quot; &quot;KA1504000151&quot; ...
+ $ end_station_name  : chr [1:103770] &quot;Clark St &amp; Touhy Ave&quot; &quot;Clark St &amp; Touhy Ave&quot; &quot;Greenview Ave &amp; Fullerton Ave&quot; &quot;Paulina St &amp; Montrose Ave&quot; ...
+ $ end_station_id    : chr [1:103770] &quot;RP-007&quot; &quot;RP-007&quot; &quot;TA1307000001&quot; &quot;TA1309000021&quot; ...
+ $ start_lat         : num [1:103770] 42 42 41.9 42 41.9 ...
+ $ start_lng         : num [1:103770] -87.7 -87.7 -87.7 -87.7 -87.6 ...
+ $ end_lat           : num [1:103770] 42 42 41.9 42 41.9 ...
+ $ end_lng           : num [1:103770] -87.7 -87.7 -87.7 -87.7 -87.6 ...
+ $ member_casual     : chr [1:103770] &quot;casual&quot; &quot;casual&quot; &quot;member&quot; &quot;casual&quot; ...
+ - attr(*, &quot;spec&quot;)=
+  .. cols(
+  ..   ride_id = col_character(),
+  ..   rideable_type = col_character(),
+  ..   started_at = col_datetime(format = &quot;&quot;),
+  ..   ended_at = col_datetime(format = &quot;&quot;),
+  ..   start_station_name = col_character(),
+  ..   start_station_id = col_character(),
+  ..   end_station_name = col_character(),
+  ..   end_station_id = col_character(),
+  ..   start_lat = col_double(),
+  ..   start_lng = col_double(),
+  ..   end_lat = col_double(),
+  ..   end_lng = col_double(),
+  ..   member_casual = col_character()
+  .. )
+ - attr(*, &quot;problems&quot;)=&lt;externalptr&gt; </code></pre>
+<pre class="r"><code>colnames(trip_data_202201)</code></pre>
+<pre><code> [1] &quot;ride_id&quot;            &quot;rideable_type&quot;      &quot;started_at&quot;        
+ [4] &quot;ended_at&quot;           &quot;start_station_name&quot; &quot;start_station_id&quot;  
+ [7] &quot;end_station_name&quot;   &quot;end_station_id&quot;     &quot;start_lat&quot;         
+[10] &quot;start_lng&quot;          &quot;end_lat&quot;            &quot;end_lng&quot;           
+[13] &quot;member_casual&quot;     </code></pre>
+<pre class="r"><code>skim_without_charts(trip_data_202201)</code></pre>
+<table>
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">trip_data_202201</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">103770</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">13</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">character</td>
+<td align="left">7</td>
+</tr>
+<tr class="odd">
+<td align="left">numeric</td>
+<td align="left">4</td>
+</tr>
+<tr class="even">
+<td align="left">POSIXct</td>
+<td align="left">2</td>
+</tr>
+<tr class="odd">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">empty</th>
+<th align="right">n_unique</th>
+<th align="right">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ride_id</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">16</td>
+<td align="right">16</td>
+<td align="right">0</td>
+<td align="right">103770</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">rideable_type</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">11</td>
+<td align="right">13</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">start_station_name</td>
+<td align="right">16260</td>
+<td align="right">0.84</td>
+<td align="right">10</td>
+<td align="right">53</td>
+<td align="right">0</td>
+<td align="right">758</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">start_station_id</td>
+<td align="right">16260</td>
+<td align="right">0.84</td>
+<td align="right">3</td>
+<td align="right">44</td>
+<td align="right">0</td>
+<td align="right">758</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">end_station_name</td>
+<td align="right">17927</td>
+<td align="right">0.83</td>
+<td align="right">10</td>
+<td align="right">51</td>
+<td align="right">0</td>
+<td align="right">724</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">end_station_id</td>
+<td align="right">17927</td>
+<td align="right">0.83</td>
+<td align="right">3</td>
+<td align="right">44</td>
+<td align="right">0</td>
+<td align="right">724</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">member_casual</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">6</td>
+<td align="right">6</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">start_lat</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">41.90</td>
+<td align="right">0.05</td>
+<td align="right">41.65</td>
+<td align="right">41.88</td>
+<td align="right">41.89</td>
+<td align="right">41.93</td>
+<td align="right">45.64</td>
+</tr>
+<tr class="even">
+<td align="left">start_lng</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">-87.65</td>
+<td align="right">0.05</td>
+<td align="right">-87.83</td>
+<td align="right">-87.66</td>
+<td align="right">-87.64</td>
+<td align="right">-87.63</td>
+<td align="right">-73.80</td>
+</tr>
+<tr class="odd">
+<td align="left">end_lat</td>
+<td align="right">86</td>
+<td align="right">1</td>
+<td align="right">41.90</td>
+<td align="right">0.05</td>
+<td align="right">41.65</td>
+<td align="right">41.88</td>
+<td align="right">41.90</td>
+<td align="right">41.93</td>
+<td align="right">42.07</td>
+</tr>
+<tr class="even">
+<td align="left">end_lng</td>
+<td align="right">86</td>
+<td align="right">1</td>
+<td align="right">-87.65</td>
+<td align="right">0.03</td>
+<td align="right">-87.83</td>
+<td align="right">-87.66</td>
+<td align="right">-87.64</td>
+<td align="right">-87.63</td>
+<td align="right">-87.52</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: POSIXct</strong></p>
+<table>
+<colgroup>
+<col width="13%" />
+<col width="9%" />
+<col width="13%" />
+<col width="18%" />
+<col width="18%" />
+<col width="18%" />
+<col width="8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="left">min</th>
+<th align="left">max</th>
+<th align="left">median</th>
+<th align="right">n_unique</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">started_at</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">2022-01-01 00:00:05</td>
+<td align="left">2022-01-31 23:58:37</td>
+<td align="left">2022-01-16 11:50:04</td>
+<td align="right">100315</td>
+</tr>
+<tr class="even">
+<td align="left">ended_at</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">2022-01-01 00:01:48</td>
+<td align="left">2022-02-01 01:46:16</td>
+<td align="left">2022-01-16 12:04:35</td>
+<td align="right">100047</td>
+</tr>
+</tbody>
+</table>
+<p>December 2021:</p>
+<pre class="r"><code>str(trip_data_202112)
+colnames(trip_data_202112)
+skim_without_charts(trip_data_202112)</code></pre>
+<p>November 2021:</p>
+<pre class="r"><code>str(trip_data_202111)
+colnames(trip_data_202111)
+skim_without_charts(trip_data_202111)</code></pre>
+<p>October 2021:</p>
+<pre class="r"><code>str(trip_data_202110)
+colnames(trip_data_202110)
+skim_without_charts(trip_data_202110)</code></pre>
+<p>September 2021:</p>
+<pre class="r"><code>str(trip_data_202109)
+colnames(trip_data_202109)
+skim_without_charts(trip_data_202109)</code></pre>
+<p>August 2021:</p>
+<pre class="r"><code>str(trip_data_202108)
+colnames(trip_data_202108)
+skim_without_charts(trip_data_202108)</code></pre>
+<p>July 2021:</p>
+<pre class="r"><code>str(trip_data_202107)
+colnames(trip_data_202107)
+skim_without_charts(trip_data_202107)</code></pre>
+<p>June 2021:</p>
+<pre class="r"><code>str(trip_data_202106)
+colnames(trip_data_202106)
+skim_without_charts(trip_data_202106)</code></pre>
+<p>May 2021:</p>
+<pre class="r"><code>str(trip_data_202105)
+colnames(trip_data_202105)
+skim_without_charts(trip_data_202105)</code></pre>
+<p>Apr 2021:</p>
+<pre class="r"><code>str(trip_data_202104)
+colnames(trip_data_202104)
+skim_without_charts(trip_data_202104)</code></pre>
+<p>Mar 2021:</p>
+<pre class="r"><code>str(trip_data_202103)
+colnames(trip_data_202103)
+skim_without_charts(trip_data_202103)</code></pre>
+<p>Feb 2021:</p>
+<pre class="r"><code>str(trip_data_202102)
+colnames(trip_data_202102)
+skim_without_charts(trip_data_202102)</code></pre>
+<p>After a quick review of the metadata, we can obtain valuable information, data types on the columns, completion rate, and a noticeable detail, the “ended_at” data in several months overlaps into the next month by several days.</p>
+</div>
+<div id="initial-findings" class="section level3">
+<h3>2.3 - Initial Findings:</h3>
+<ul>
+<li>All .csv files contain consistent column names and data.</li>
+<li>All loaded datasets share commonalities in their data for example:
+<ul>
+<li>7 Character Columns: id of the ride, rideable type, start and end station id and name and the last column is the type of rider.</li>
+<li>4 Numeric Columns: corresponding to lat/long data for both start and end stations.</li>
+<li>2 Date time columns: start and end time of the ride.</li>
+</ul></li>
+<li>All datasets have consistent data on the fields “ride_id”, “rideable_type”, “member_casual”, “started_at”, and “ended_at”.</li>
+<li>Missing data present on all datasets on the same fields:
+<ul>
+<li>After checking completion rate with the <code>skim_without_charts()</code> function and sampling data on the datasets using the <code>View()</code> function, we can observe several missing values in the columns:
+<ul>
+<li>start_station_name</li>
+<li>start_station_id</li>
+<li>end_station_name</li>
+<li>end_station_id</li>
+<li>start_lat</li>
+<li>start_lng</li>
+<li>end_lat</li>
+<li>end_lng</li>
+</ul></li>
+</ul></li>
+<li>Inconsistent values of latitude/longitude:
+<ul>
+<li>Upon further analysis of the data, we can verify the precision of the coordinates given, varies in several degrees of precision, some stations id/names are associated with different coordinates on some trips. The data given have from zero decimals of precision up to 5 or more.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="handling-missing-data." class="section level1">
+<h1>3 - Handling missing data.</h1>
+<div id="contains-assumptions-made-in-order-to-proceed-with-further-analysis" class="section level3">
+<h3><strong>(Contains assumptions made in order to proceed with further analysis)</strong></h3>
+<p>We present our initial findings to the Marketing analytics team, we provide information about the fields with missing data, the completion rate of the columns and additional information about our findings.</p>
+<p>We took some time to check the data on the generated tables and observed several entries missing information about the stations, most of them have latitude and longitude records with a smaller precision than the stations with no missing data. As mentioned in our initial findings, this could be the reason why the station has not been identified by our logging system.</p>
+<p>Before making a decision, we will check how removing the rows with missing data would affect our overall data.</p>
+<p>We will first merge all data sets into a larger one and then run the <code>skim_without_charts()</code> function to the new dataset.</p>
+</div>
+<div id="combining-all-data." class="section level3">
+<h3>3.1 - Combining all data.</h3>
+<pre class="r"><code>all_trip_data &lt;- bind_rows(trip_data_202201, trip_data_202112, trip_data_202111, trip_data_202110, 
+                           trip_data_202109, trip_data_202108, trip_data_202107, trip_data_202106, 
+                           trip_data_202105, trip_data_202104, trip_data_202103, trip_data_202102)
+skim_without_charts(all_trip_data)</code></pre>
+</div>
+<div id="cleaning-column-names." class="section level3">
+<h3>3.2 - Cleaning column names.</h3>
+<pre class="r"><code>clean_names(all_trip_data)</code></pre>
+<pre><code># A tibble: 5,601,999 x 13
+   ride_id          rideable_type started_at          ended_at           
+   &lt;chr&gt;            &lt;chr&gt;         &lt;dttm&gt;              &lt;dttm&gt;             
+ 1 C2F7DD78E82EC875 electric_bike 2022-01-13 11:59:47 2022-01-13 12:02:44
+ 2 A6CF8980A652D272 electric_bike 2022-01-10 08:41:56 2022-01-10 08:46:17
+ 3 BD0F91DFF741C66D classic_bike  2022-01-25 04:53:40 2022-01-25 04:58:01
+ 4 CBB80ED419105406 classic_bike  2022-01-04 00:18:04 2022-01-04 00:33:00
+ 5 DDC963BFDDA51EEA classic_bike  2022-01-20 01:31:10 2022-01-20 01:37:12
+ 6 A39C6F6CC0586C0B classic_bike  2022-01-11 18:48:09 2022-01-11 18:51:31
+ 7 BDC4AB637EDF981B classic_bike  2022-01-30 18:32:52 2022-01-30 18:49:26
+ 8 81751A3186E59A6B classic_bike  2022-01-22 12:20:02 2022-01-22 12:32:06
+ 9 154222B86A338ABD electric_bike 2022-01-17 07:34:41 2022-01-17 08:00:08
+10 72DC25B2DD467EEF classic_bike  2022-01-28 15:27:53 2022-01-28 15:35:16
+# ... with 5,601,989 more rows, and 9 more variables: start_station_name &lt;chr&gt;,
+#   start_station_id &lt;chr&gt;, end_station_name &lt;chr&gt;, end_station_id &lt;chr&gt;,
+#   start_lat &lt;dbl&gt;, start_lng &lt;dbl&gt;, end_lat &lt;dbl&gt;, end_lng &lt;dbl&gt;,
+#   member_casual &lt;chr&gt;</code></pre>
+</div>
+<div id="checking-for-duplicates." class="section level3">
+<h3>3.3 - Checking for duplicates.</h3>
+<pre class="r"><code>get_dupes(all_trip_data)</code></pre>
+<pre><code># A tibble: 0 x 14
+# ... with 14 variables: ride_id &lt;chr&gt;, rideable_type &lt;chr&gt;, started_at &lt;dttm&gt;,
+#   ended_at &lt;dttm&gt;, start_station_name &lt;chr&gt;, start_station_id &lt;chr&gt;,
+#   end_station_name &lt;chr&gt;, end_station_id &lt;chr&gt;, start_lat &lt;dbl&gt;,
+#   start_lng &lt;dbl&gt;, end_lat &lt;dbl&gt;, end_lng &lt;dbl&gt;, member_casual &lt;chr&gt;,
+#   dupe_count &lt;int&gt;</code></pre>
+<p>We get zero rows as result, the table contains no duplicates.</p>
+<p>Some housekeeping in order to remove no longer needed data for our analysis. We make sure the original data files are available before we proceed to remove the data from our workspace.</p>
+<pre class="r"><code>rm(trip_data_202201)
+rm(trip_data_202112)
+rm(trip_data_202111)
+rm(trip_data_202110)
+rm(trip_data_202109)
+rm(trip_data_202108)
+rm(trip_data_202107)
+rm(trip_data_202106)
+rm(trip_data_202105)
+rm(trip_data_202104)
+rm(trip_data_202103)
+rm(trip_data_202102)</code></pre>
+</div>
+<div id="calculating-trip-length" class="section level3">
+<h3>3.4 - Calculating trip length</h3>
+<p>Now we will generate a new column with the length of each trip, so we can analyze this data and the impact of removing the rows with missing values. Additionally we will transform length data type from drtn to numeric.</p>
+<pre class="r"><code>all_trip_data$trip_length &lt;- difftime(all_trip_data$ended_at, all_trip_data$started_at, units = &quot;secs&quot;)
+all_trip_data$trip_length &lt;- as.numeric(all_trip_data$trip_length)</code></pre>
+<p>We find 5601999 Observations. We take a view at the data in the trip_length column.</p>
+<pre class="r"><code>all_trip_data %&gt;% 
+  summarize(mean(trip_length),min(trip_length),max(trip_length))</code></pre>
+<pre><code># A tibble: 1 x 3
+  `mean(trip_length)` `min(trip_length)` `max(trip_length)`
+                &lt;dbl&gt;              &lt;dbl&gt;              &lt;dbl&gt;
+1               1316.              -3482            3356649</code></pre>
+<p>We notice there are trips with negative duration. Since a real trip can not have negative duration we present our findings to the team to have an agreement. After confirmation, this data is removed from the dataset.</p>
+<pre class="r"><code>all_trip_data &lt;- all_trip_data %&gt;% 
+  filter(trip_length &gt; 0)</code></pre>
+<p>We are left with 5601347 observations. We ran again a simple analysis of the data in the duration column and notice all positive values now.</p>
+<pre class="r"><code>all_trip_data %&gt;% 
+  summarize(mean(trip_length),min(trip_length),max(trip_length),sd(trip_length))</code></pre>
+<pre><code># A tibble: 1 x 4
+  `mean(trip_length)` `min(trip_length)` `max(trip_length)` `sd(trip_length)`
+                &lt;dbl&gt;              &lt;dbl&gt;              &lt;dbl&gt;             &lt;dbl&gt;
+1               1316.                  1            3356649            10772.</code></pre>
+</div>
+<div id="removing-rows-with-missing-data." class="section level3">
+<h3>3.5 - Removing rows with missing data.</h3>
+<p>Next step would be to analyze the dataset without missing data.</p>
+<p><em>Had to do some research to find the optimal way to remove data with missing values</em> <a href="https://argoshare.is.ed.ac.uk/healthyr_book/missing-values-nas-and-filters.html">This website provided valuable information.</a></p>
+<pre class="r"><code>all_trip_data_clean &lt;- all_trip_data %&gt;% 
+  filter(!(is.na(start_station_name) | start_station_name == &quot;&quot;)) %&gt;% 
+  filter(!(is.na(end_station_name) | end_station_name == &quot;&quot;))
+skim_without_charts(all_trip_data_clean)</code></pre>
+<p>We are left with 4584724 observations.</p>
+<pre class="r"><code>all_trip_data_clean %&gt;% 
+  summarize(mean(trip_length),min(trip_length),max(trip_length),sd(trip_length))</code></pre>
+<p>Upon analysis of the data the team agrees that removing the rows with missing data wont negatively affect the study.</p>
+<p>A decision is made, and given the otherwise high rate of completion of the fields, we will remove the observation with missing data from our analysis. Additionally we will <em>add a task</em> to find the reason behind the missing information from our tracking system.</p>
+<p>Finding the cause of the problem and fixing it would reduce our workload in the future.<strong><em>(In this scenario Cyclistic Data Analytics team is in charge of the data collection process)</em></strong></p>
+</div>
+</div>
+<div id="integrity-check." class="section level1">
+<h1>4 - Integrity check.</h1>
+<p>We have a completion rate of 1 in all columns, which means there is no longer missing data, we will now proceed to verify the data is correct.</p>
+<div id="rideable-type." class="section level3">
+<h3>4.1 - Rideable type.</h3>
+<pre class="r"><code>rideable_type &lt;- unique(all_trip_data_clean$rideable_type)
+rideable_type</code></pre>
+<pre><code>[1] &quot;electric_bike&quot; &quot;classic_bike&quot;  &quot;docked_bike&quot;  </code></pre>
+<p>We observe in the data 3 types of rideables:</p>
+<ul>
+<li>Classic Bike</li>
+<li>Electric Bike</li>
+<li>Docked Bike</li>
+</ul>
+<p>Since the rideable types differ from the ones mentioned in the scenario documentation, we will take note of our findings and clarify the discrepancy with the team.</p>
+</div>
+<div id="startend-time." class="section level3">
+<h3>4.2 - Start/End time.</h3>
+<p>From the result of our previous <code>skim_without_charts()</code> analysis, we can verify all date-time data is correct in format and is within the range of time of our analysis.</p>
+</div>
+<div id="user-type." class="section level3">
+<h3>4.3 - User type.</h3>
+<pre class="r"><code>user_type &lt;- unique(all_trip_data_clean$member_casual)
+user_type</code></pre>
+<pre><code>[1] &quot;casual&quot; &quot;member&quot;</code></pre>
+<p>We observe only two values are present:</p>
+<ul>
+<li>Member</li>
+<li>Casual</li>
+</ul>
+<p>Since the User types differ from the ones mentioned in the scenario documentation, we will take note of our findings and clarify the discrepancy with the team.</p>
+</div>
+<div id="station-data." class="section level3">
+<h3>4.4 - Station data.</h3>
+<p>At this point we have most of the data cleaned, We have to check the integrity of the information about the stations.</p>
+<p>We have been given the information about the number of stations that Cyclistic has, we will generate a list of the stations present in the dataset.</p>
+<pre class="r"><code># The first two code lines aggregate all the unique station names mentioned in columns &quot; start_station_name&quot; and &quot;end_station_name&quot;
+stations &lt;- unique(all_trip_data_clean$start_station_name)
+stations &lt;- c(stations,unique(all_trip_data_clean$end_station_name))
+# The following step would remove the duplicate values on the vector, stations that were used as a start station and an end station.
+stations &lt;- unique(stations)
+# we use the str() function only to take a look at the first values and to show the size of the vector.
+str(stations)</code></pre>
+<p>We find information about 847 stations been used in the data set. Since the initial information we received included a number of stations of 692, we proceed to verify the information with the team. We bring the list of the unique stations found on the dataset.</p>
+</div>
+<div id="contains-assumptions-made-in-order-to-proceed-with-further-analysis-1" class="section level3">
+<h3><strong>(Contains assumptions made in order to proceed with further analysis)</strong></h3>
+<p>After meeting with the other members of Cyclistic’s Marketing Analytics Team, we obtain confirmation of the rideable and user types, and agree to meet with the operations department to clarify the station data.</p>
+<p>After presenting our findings to the operations department, we have confirmation that the number of active stations has increased to 847 and the Station ID codes are correct. The operations department confirms the coordinates are accurate and the slight differences are within the margin of error of the position tracking devices.</p>
+<p>With this confirmation we have concluded the data cleaning process.</p>
+</div>
+</div>
+<div id="saving-our-data." class="section level1">
+<h1>5 - Saving our data.</h1>
+<div id="saving-cleaned-dataset" class="section level3">
+<h3>5.1 - Saving cleaned dataset:</h3>
+<pre class="r"><code>#Saving cleaned dataset
+fwrite(all_trip_data_clean, file = &quot;trip_data_clean.csv&quot;, col.names = TRUE, row.name = FALSE)</code></pre>
+</div>
+<div id="saving-other-datasets-generated-for-future-use." class="section level3">
+<h3>5.2 - Saving other datasets generated for future use.</h3>
+<pre class="r"><code>#Saving uncleaned dataset
+fwrite(all_trip_data, file = &quot;all_trip_data.csv&quot;, col.names = TRUE, row.name = FALSE)</code></pre>
+</div>
+<div id="removing-data-from-our-workspace." class="section level3">
+<h3>5.3 - Removing data from our workspace.</h3>
+<pre class="r"><code>rm(all_trip_data_clean)
+rm(stations)
+rm(all_trip_data)</code></pre>
+</div>
+</div>
+</div>
+
+   
+   
+              </div>
+  </div>
+  </div>
+  </div>
+   
+      
+
+  <script>
+    $(document).ready(function () {
+
+		// add bootstrap table styles to pandoc tables
+	$('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+		
+ 		
+	    });
+  </script>
+
+
+
+    <!-- dynamically load mathjax for compatibility with self-contained -->
+  <script>
+    (function () {
+	var script = document.createElement("script");
+	script.type = "text/javascript";
+	script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+	document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+  </script>
+  
+</body>
+</html>

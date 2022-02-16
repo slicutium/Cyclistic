@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="generator" content="pandoc" />
+
+        <meta name="author" content="Pablo Solis" />
+    
+    
+    <title>  Analyse</title>
+
+        <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+        <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="site_libs/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="site_libs/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+        <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+        <script src="site_libs/navigation-1.1/tabsets.js"></script>
+        <link href="site_libs/magnific-popup-1.1.0/magnific-popup.css" rel="stylesheet" />
+        <script src="site_libs/magnific-popup-1.1.0/jquery.magnific-popup.min.js"></script>
+        <link href="site_libs/downcute-0.1/downcute.css" rel="stylesheet" />
+        <link href="site_libs/downcute-0.1/downcute_fonts_embed.css" rel="stylesheet" />
+        <link href="site_libs/downcute-0.1/downcute_chaos.css" rel="stylesheet" />
+        <script src="site_libs/downcute-0.1/downcute_styles.js"></script>
+        <script src="site_libs/downcute-0.1/downcute.js"></script>
+        <script src="site_libs/prism-1.22/prism.js"></script>
+    
+    
+    
+    
+    <!-- tabsets -->
+    <script>
+      $(document).ready(function () {
+	  window.buildTabsets("toc");
+      });
+      $(document).ready(function () {
+	  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+	      $(this).parent().toggleClass('nav-tabs-open')
+	  });
+      });
+    </script>
+
+    <!-- code folding -->
+    
+    <!-- code download -->
+    
+    <!-- tabsets dropdown -->
+
+    <style type="text/css">
+      .tabset-dropdown > .nav-tabs {
+	  display: inline-table;
+	  max-height: 500px;
+	  min-height: 44px;
+	  overflow-y: auto;
+	  background: white;
+	  border: 1px solid #ddd;
+	  border-radius: 4px;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+	  content: "&#xe258;";
+	  border: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active {
+	  display: block;
+      }
+
+      .tabset-dropdown > .nav-tabs > li.active a {
+  	  padding: 0 15px !important;
+      }
+
+      .tabset-dropdown > .nav-tabs > li > a,
+      .tabset-dropdown > .nav-tabs > li > a:focus,
+      .tabset-dropdown > .nav-tabs > li > a:hover {
+	  border: none;
+	  display: inline-block;
+	  border-radius: 4px;
+	  background-color: transparent;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+	  display: block;
+	  float: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li {
+	  display: none;
+	  margin-left: 0 !important;
+      }
+    </style>
+    
+</head>
+
+<body class="preload">
+
+   	
+               <!-- downcute start -->   
+   <div id="docute" class="Root theme-chaos">
+     <div class="Page layout-narrow">
+      <div class="Wrap">
+        <div class="Sidebar">
+          <div class="SidebarItems" id="toc">
+            <ul>
+            <li><a href="#analyse">Analyse</a></li>
+            <li><a href="#preparing-our-working-environment.">1 - Preparing our working environment.</a></li>
+            <li><a href="#loading-data.">2 - Loading data.</a></li>
+            <li><a href="#transforming-data.">3 - Transforming data.</a></li>
+            <li><a href="#data-analyzis">4 - Data analyzis</a></li>
+            <li><a href="#ride-length-analysis.">5 - Ride length analysis.</a></li>
+            <li><a href="#stations">6 - Stations</a></li>
+            </ul>
+          </div>
+          <div data-position="sidebar:post-end" class="InjectedComponents"><div class="dark-theme-toggler"><div class="toggle checked"><div class="toggle-track"><div class="toggle-track-check"><img  src="data:image/png;base64,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" role="presentation" style="pointer-events: none;" width="16" height="16"></div> <div class="toggle-track-x"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAVlpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IlhNUCBDb3JlIDUuNC4wIj4KICAgPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICAgICAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIKICAgICAgICAgICAgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iPgogICAgICAgICA8dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KTMInWQAABwNJREFUWAmtV1tsFFUY/s6Z2d22zLYlZakUCRVaQcqlWIiCiS1gTEB9UAO+GR9En3iQGI0xJiSiRB98MjEq8cEQTSBeHhQM0V7whtEGDWC90BYitxahtNtu25058/v/ZzvLbilawJNM5+yZ89+//1LgJhYRNLW1uDfBAvpGiIk2O5auvfFxqIH3ZJ8/u06GN6Z9+wVl5SjcD1IbZa/UPkPyYl2uR4dreoD2bnbYxTlBBRytkHXtAREphP5KuH4lddx9h70yxX05t7yYXwGb6W8nx1jibpl2rFlGBxcG9M18okOrn7Bnk/BAO/4bI0UeEE1zjBp3UmvjOxJXJdaKN/ZiIu4tOZrAb4aTdZAZArKmWeiiJZ6jt5tiagdCS9+6cgO1Ne6Mvhe+ixTIfyDVhipnK9p+P0Edqx9RW/YZtQVGmOLChRxNNlyPsTEgPQKMB3dbEHa0h1awYmQ83enTd2vmUtvKd1Glv2RkzBb+kZGRrKtjzG60Wguhd/lJZBingbcfWWe72vjT75bJDrhYtvA0hrurETDr5HyF2Knb1MM4ab//xIoOqueA0edRnkkinTyJdYvqLFDZO4zUPFCvVoDjJq4T7TE61IWh4x5KqxX5KVKkX8WZ/t2ov2cb3MHt4dhIyOxIJxJOOF6xRx/99BksXLoecWcXytILMNBDqKpnGZWPquYfPxY8iXGR9fK+SgFrgcRPXPjVqhehL+3EmZ5RGJQi1QBU8TPThQnOQzm+5UXGIcetUeEAfP13VwzpI+w1jGJWdSliNfvVhiMPiOsllJag4M/UGHiqM6dlBb2OTLKHHV6KkvogrJ4XhBWniWK/Gp1MQyf93FOeUXKmKk/FzJxbQtKLjFXYT4USupy8fQVir2ynVEBiZMG0qtOHMS/AW4Gwrk7BG3C1F0B5nqNKE0CME4MfVRLPnXkBKe+ipvoFhNQywOhdghvLi0F8ReyVXV4BKTBRbbe5f64zR/DHsdZw1hJfeWlHl/GNRJzDxrd5m192z78TMaVnKELZoINZS4BzQ7vtnZljSnha/pPCbkuxzXcupYwI5tIeCpGc0Yp9tWHZQy/rmYhRfNgg4bHJBYLzGkxsRJF4XKlE2jBOHNSv3kY7Tj6vthzPFl61BrYwqFlmEQhtSVXmLiksxLmtRgYXI1ULU61JJ4eVKmG3/5sCVgpbMT6OMJ2E08/29Xf3w6v4FnHdCjfWgXu/O8Z5mLdCkeRs2khHe1DqOtQwbHWTAnM5S2HNmhALYo5KjkPFrMMKjZl6HxhWIAb0BqE+/73GrBRQUsKYiBu4JX8ycI6wtw+i5ef3NZpsrKVSHYCP37jwGDgeE1SA0S/xtl5SU2fs1ApEp0qTLVRjgyycDSsLHMSwmFltZMStR3uLLg6BdLhDa5dC6ryU2pHBe1BVO9tUcwfitJt2CLJZUHoG6T7Op75u0IyK31TCPcwFqgPk/KCaD3dFOuZBCO7xvCT/j048b3I3c7F2+WuOW7qdgkucFYlcQ4qop3yzTX7WaKfOCccye3Ts1Etq0+a/BHCF1yPgF3tAUkR6OrtGmo6gl94qqcXKh3rDyrOkPa58URoWcov2Mo6M+0QjrqKB+b7++oMa9Sz+ZkM0mie6aAtnGUvhmxaI+TogPOSQedgWioGSHFLn3v4kLh4HRspNmOGv41k+55siLFp2z6xYeJjhljFcbmxJlr4ga06TbevSByz/glQq4BJx46/c+237PbBqEYKxX3HpmKZEnQnr65X20hqJYaNcLoFOLiJk2LuBbyg7Q0OEn+hm0P3honxFD6rdxYorKpeIoi4YSSvyQHQIbM5t4+YNxLj/OxhVOOE4585qGpjnq+wSx6Q9CtNxTjd5klB+g6Mv36r0+b9cZFi44WYkHdG2ZWb3TtOUOXyVAlKlpGvJIAJ3eBMyfYS5C0qRZGtC85j+4sOasDe9xznPYezhhO/2Q6eP2fSOvYHOjtuQ1a9Q1VKynVDaMc8E0tptdxUsTFpFIYjcZKcbnoaQTNdiqCwNlL4G7oziSqGnT1ALf34vhk4R5zU3qYV9ONp9K88RtouShE68JwaU8dFw5W617shWa9ykeaBIn2hcsvPgL00k45QdTCZuSVcTRNs+8fnyLvooQfR5iujAnR9bxfY2xOVOxFS8SK3Le0l48VyYu1M8HRe5JD8wKPTjYnifaK3Wfn/GChYQ8ZAi6WRzWgqLV5YrsVLnZaVSoXU1g9gOIDwFySiGi+Zdrnzr7J3r+SMuszlcQCRn8lNGcTuSy2jOI7o9mxjZo+vR3ej3tN+ifRSOyUTS0+VMOid93cCubeiy/6TImS0QxRSCq2vxKr45zV+FQnjWH6D2xg+E9EatLcLAdHTgtGGD80D6jM0+aOl4wJgO/f96R2aJKCQ3yvgftRhdFMOpd6oAAAAASUVORK5CYII=" role="presentation" style="pointer-events: none;" width="16" height="16"></div></div> <div class="toggle-thumb"></div></div> <input type="checkbox" aria-label="Switch between Dark and Default theme" class="toggler-screen-reader-only"></div></div>
+        </div>
+        <div class="Main">
+          <div class="Content" id="content"> 
+   
+   
+      
+      <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Cyclistic Data Analysis</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li>
+        <a href="index.html">Home</a>
+      </li>
+      <li>
+        <a href="Ask.html">Ask</a>
+      </li>
+      <li>
+        <a href="Prepare.html">Prepare</a>
+      </li>
+      <li>
+        <a href="Process.html">Process</a>
+      </li>
+      <li>
+        <a href="Analyse.html">Analyse</a>
+      </li>
+      <li>
+        <a href="Share.html">Share</a>
+      </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container -->
+      </div><!--/.navbar -->
+        
+      <h1 class="title"><br> Analyse</h1>
+      
+      <p class="authors">
+           <span class="glyphicon glyphicon-user"></span> Pablo Solis
+      </p>
+         <p class="date"><span class="glyphicon glyphicon-calendar"></span> 2/10/2022</p>
+           
+
+   
+      
+   
+<!-- Don't indent these lines or it will mess pre blocks indentation --> 
+<div class="page-content has-page-title">
+<div id="analyse" class="section level1">
+<h1>Analyse</h1>
+<p>We will continue using R and Rstudio for the Analyse step of the process. At this stage we have a cleaned and unified dataset to work with, now we will proceed to analyse it. We will manipulate the data so it provides useful information, for example, we will obtain the length of the ride by calculating the difference between the end and the start time of the ride.</p>
+</div>
+<div id="preparing-our-working-environment." class="section level1">
+<h1>1 - Preparing our working environment.</h1>
+<div id="installing-required-packages." class="section level3">
+<h3>1.1 - Installing required packages.</h3>
+<pre class="r"><code># we use tidyverse for most of the data wrangling
+install.packages(&quot;tidyverse&quot;)
+# we use ggplot2 for plotting
+install.packages(&quot;ggplot2&quot;)
+install.packages(&quot;ggridges&quot;)
+# we use skimr for skim_without_charts()
+install.packages(&quot;skimr&quot;)
+# We use viridis for aesthetics
+install.packages(&quot;viridis&quot;)
+install.packages(&quot;leaflet&quot;)</code></pre>
+</div>
+<div id="loading-packages." class="section level3">
+<h3>1.2 - Loading packages.</h3>
+<pre class="r"><code>library(tidyverse)
+library(ggplot2)
+library(ggridges)
+library(ggpubr)
+library(skimr)
+library(data.table)
+library(lubridate)
+library(scales)
+library(viridis)
+# Libraries for the leaflet
+library(leaflet)
+library(htmlwidgets)
+library(htmltools)</code></pre>
+</div>
+</div>
+<div id="loading-data." class="section level1">
+<h1>2 - Loading data.</h1>
+<pre class="r"><code>#Loading cleaned data from .csv file
+
+trip_data_cleaned &lt;- fread(&quot;C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/To build repository/trip_data_clean.csv&quot;)</code></pre>
+</div>
+<div id="transforming-data." class="section level1">
+<h1>3 - Transforming data.</h1>
+<p>We will use the original data to find useful information for our analysis and we will add it to the dataset in new columns. During the previous stage of the process we obtained the length of the ride from data in the columns <strong>started_at</strong> and <strong>ended_at</strong>.</p>
+<div id="date---time-data." class="section level3">
+<h3>3.1 - Date - time data.</h3>
+<p>We will extract information from the <strong>started_at</strong> column like the day of the week and week number.</p>
+<pre class="r"><code># Day number in day column.
+
+trip_data_cleaned$day &lt;- format(trip_data_cleaned$started_at, &quot;%d&quot;)
+
+# Month number in day month column.
+
+trip_data_cleaned$month &lt;- format(trip_data_cleaned$started_at, &quot;%m&quot;)
+
+# Year in year column
+
+trip_data_cleaned$year &lt;- format(trip_data_cleaned$started_at, &quot;%Y&quot;)
+
+# Day of week in day_of_week column.
+
+trip_data_cleaned$day_of_week &lt;- format(trip_data_cleaned$started_at, &quot;%A&quot;)
+
+# Week number in week column.
+
+trip_data_cleaned$week &lt;- format(trip_data_cleaned$started_at, &quot;%W&quot;)
+
+# Date in date column.
+
+trip_data_cleaned$date &lt;- date(trip_data_cleaned$started_at)</code></pre>
+</div>
+</div>
+<div id="data-analyzis" class="section level1">
+<h1>4 - Data analyzis</h1>
+<div id="rideable-type-usage." class="section level3">
+<h3>4.1 - Rideable type usage.</h3>
+<p>We will begin analyzing the trips by rideable type:</p>
+<pre class="r"><code># Shows a bar chart grouping rideable types and showing the number of rides, also the bars are divided by user type.
+
+ggplot(data = trip_data_cleaned) + 
+  geom_bar(mapping = aes(x = str_to_title(gsub(&quot;_&quot;,&quot; &quot;,rideable_type)), fill = str_to_title(member_casual)), alpha = 0.6) +
+  labs(x = &quot;Rideable types&quot;, y = &quot;Number of Rides&quot;, fill = &quot;User type&quot;) +
+  scale_fill_viridis(discrete = TRUE) +
+  scale_y_continuous(labels = label_number_si()) +
+  theme_light()</code></pre>
+<p><img src="Analyse_files/figure-html/Rideable%20type%20usage-1.png" width="768" /></p>
+<p>Findings:</p>
+<p>The majority of trips are made by members.</p>
+<p>Classic bikes are the most used rideable type, followed by electric bikes and lastly, docked bikes. Members use <strong>classic bikes</strong> the most with almost 2 million trips in the last twelve months. Their second most used bike is the <strong>electric bike</strong>. There is no trips made by members with <strong>docked bikes</strong></p>
+<p>Casual users made trips mostly on <strong>classic bikes</strong>. Their second most used bike is the <strong>electric bike</strong>. Casual users account for all trips made with <strong>docked bikes</strong>.</p>
+</div>
+<div id="rides-by-month." class="section level3">
+<h3>4.2 - Rides by month.</h3>
+<pre class="r"><code># Rides per month
+
+ggplot(data = trip_data_cleaned) +
+  geom_bar(mapping = aes(x = floor_date(started_at, unit = &quot;month&quot;), fill = str_to_title(member_casual)), 
+           position = &quot;dodge&quot;, 
+           alpha = 0.6) + 
+  labs(x = element_blank(), y = &quot;Number of Rides&quot;, fill = &quot;User type&quot;) +
+  scale_x_datetime(date_labels = &quot;%b %y&quot;, breaks = &quot;month&quot;) +
+  scale_fill_viridis(discrete = TRUE) +
+  scale_y_continuous(labels = label_number_si()) +
+  theme_light()</code></pre>
+<p><img src="Analyse_files/figure-html/Rides%20per%20month-1.png" width="768" /></p>
+<p>Findings:</p>
+<p>We can observe a higher demand during the warmer months, casual user ridership drops significantly during mid fall and winter. The month with lowest demand was February, the month with highest demand was August.</p>
+</div>
+<div id="ridedate-heatmap." class="section level3">
+<h3>4.3 - Ride/date Heatmap.</h3>
+<p>We will continue our analysis looking into trip data per week.</p>
+<p>We will generate a data frame with the information required to plot a heatmap that will help us visualize the amount of trips during the weeks within our analysis period.</p>
+<pre class="r"><code># preparing data before loading
+
+trip_data_date &lt;- trip_data_cleaned %&gt;% 
+  select(day_of_week, week, year, date) %&gt;%
+  group_by(date) %&gt;% 
+  mutate(count_trips = n()) %&gt;% 
+  distinct(date, .keep_all = TRUE)
+
+#To assign an order to the days of the week otherwise they are charted alphabetically
+trip_data_date$day_of_week &lt;- ordered(trip_data_date$day_of_week, 
+  levels = c(&quot;Monday&quot;, &quot;Tuesday&quot;, &quot;Wednesday&quot;, &quot;Thursday&quot;, &quot;Friday&quot;, &quot;Saturday&quot;, &quot;Sunday&quot;))
+
+#We need to change the field week from character to numeric in order to be able to assign the scale for x axis
+trip_data_date$week &lt;- as.numeric(trip_data_date$week)</code></pre>
+<p>Plotting heatmap.</p>
+<pre class="r"><code>ggplot(data = trip_data_date) +
+  #colour will give us the white grid between the data spots
+  geom_tile(mapping = aes(x = week, y = day_of_week, fill = count_trips), colour = &quot;white&quot;, na.rm = FALSE) +
+  #Using viridis colour pallet
+  scale_fill_viridis(option = &quot;D&quot;, name = &quot;Number of trips&quot;) +
+  #expand is used to close remove the extra space on the sides, the breaks will give us the spaces to place the months
+  scale_x_continuous(expand = c(0, 0),breaks = seq(01, 52, length = 12), 
+                     labels = c(&quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&quot;, &quot;May&quot;, &quot;Jun&quot;, &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;, &quot;Oct&quot;, &quot;Nov&quot;, &quot;Dec&quot;)) +
+  #to wrap the data by year, we set ncol to 1 so the other chart is presented below and not to the side.
+  facet_wrap(~year, ncol = 1) +
+  #to reverse the order of data in the y axis
+  scale_y_discrete(limits = rev) +
+  #to use a brighter theme
+  theme_light() +
+  #to remove the x axis label
+  labs(x = element_blank(), y = element_blank())</code></pre>
+<p><img src="Analyse_files/figure-html/Trips%20per%20date%20heatmap-1.png" width="768" /></p>
+<p>Findings:</p>
+<p>We can observe that there is an increase in demand during the last weeks of May and continues until the last weeks of September. During this period the amount of trips increase during the weekends been Saturday the day with the highest demand.</p>
+<p>We will further analyze data per week and day of the week segregating the data by user type.</p>
+<pre class="r"><code># preparing data before loading
+
+## we have to generate another set of data, the previous one had trip count by day, and I have not been able to use a dataset with separation by user type, the ##difficulty appears when trying to combine the trip numbers in order to plot a dataset combining both user types (like the plot above)
+## Because of this I need to generate another data set with the divided information in order to plot it.
+
+trip_data_date_user &lt;- trip_data_cleaned %&gt;% 
+  select(day_of_week, week, year, date, member_casual) %&gt;%
+  group_by(date,member_casual) %&gt;% 
+  mutate(count_trips = n()) %&gt;% 
+  distinct(date, .keep_all = TRUE)
+
+#To assign an order to the days of the week otherwise they are charted alphabetically
+trip_data_date_user$day_of_week &lt;- ordered(trip_data_date_user$day_of_week, 
+  levels = c(&quot;Monday&quot;, &quot;Tuesday&quot;, &quot;Wednesday&quot;, &quot;Thursday&quot;, &quot;Friday&quot;, &quot;Saturday&quot;, &quot;Sunday&quot;))
+
+#We need to change the field week from character to numeric in order to be able to assign the scale for x axis
+trip_data_date_user$week &lt;- as.numeric(trip_data_date_user$week)
+
+# Data frame for members only 
+member_heat_map &lt;- trip_data_date_user %&gt;%
+  filter(member_casual == &quot;member&quot;)
+
+#Data frame for casual riders only
+casual_heat_map &lt;- trip_data_date_user %&gt;%
+  filter(member_casual == &quot;casual&quot;)</code></pre>
+<pre class="r"><code>member_plot &lt;- ggplot(data = member_heat_map) +
+  #colour will give us the white grid between the data spots
+  geom_tile(mapping = aes(x = week, y = day_of_week, fill = count_trips), colour = &quot;white&quot;, na.rm = FALSE) +
+  #Using viridis colour pallet
+  scale_fill_viridis(option = &quot;D&quot;, name = &quot;Number of trips&quot;) +
+  #expand is used to close remove the extra space on the sides, the breaks will give us the spaces to place the months
+  scale_x_continuous(expand = c(0, 0),breaks = seq(01, 52, length = 12), 
+                     labels = c(&quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&quot;, &quot;May&quot;, &quot;Jun&quot;, &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;, &quot;Oct&quot;, &quot;Nov&quot;, &quot;Dec&quot;)) +
+  #to wrap the data by year, we set ncol to 1 so the other chart is presented below and not to the side.
+  facet_wrap(~year , ncol = 1) +
+  #to reverse the order of data in the y axis
+  scale_y_discrete(limits = rev) +
+  #to use a brighter theme
+  theme_light() +
+  #to remove the x axis label
+  labs(x = element_blank(), y = element_blank()) +
+  labs(title = &quot;Member Riders&quot;) </code></pre>
+<pre class="r"><code>casual_plot &lt;- ggplot(data = casual_heat_map) +
+  #colour will give us the white grid between the data spots
+  geom_tile(mapping = aes(x = week, y = day_of_week, fill = count_trips), colour = &quot;white&quot;, na.rm = FALSE) +
+  #Using viridis colour pallet
+  scale_fill_viridis(option = &quot;D&quot;, name = &quot;Number of trips&quot;) +
+  #expand is used to close remove the extra space on the sides, the breaks will give us the spaces to place the months
+  scale_x_continuous(expand = c(0, 0),breaks = seq(01, 52, length = 12), 
+                     labels = c(&quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&quot;, &quot;May&quot;, &quot;Jun&quot;, &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;, &quot;Oct&quot;, &quot;Nov&quot;, &quot;Dec&quot;)) +
+  #to wrap the data by year, we set ncol to 1 so the other chart is presented below and not to the side.
+  facet_wrap(~year , ncol = 1) +
+  #to reverse the order of data in the y axis
+  scale_y_discrete(limits = rev) +
+  #to use a brighter theme
+  theme_light() +
+  #to remove the x axis label
+  labs(x = element_blank(), y = element_blank()) +
+  labs(title = &quot;Member Riders&quot;) </code></pre>
+<pre class="r"><code>heatmap_user &lt;- ggarrange(member_plot, casual_plot, ncol = 1, nrow = 2, common.legend = TRUE, legend = &quot;right&quot;)</code></pre>
+<pre class="r"><code>heatmap_user</code></pre>
+<p><img src="Analyse_files/figure-html/heatmap%20users-1.png" width="768" /></p>
+<p>Findings:</p>
+<p>We can observe that casual riders use our services the most between the months of May and early October. During this period, their demand increases during the weekends been Saturday the day with the highest demand.</p>
+<p>Members use Cyclistic bikes the most between early April up to late October. The maximum amount of trips per day is lower than casual riders, but their distribution is more uniform during their high demand season.</p>
+<p>We could say members use Cyclistic bikes consistently during the week and casual riders use Cyclistic bikes most during the weekends.</p>
+</div>
+<div id="rides-by-day-of-the-week." class="section level3">
+<h3>4.4 - Rides by day of the week.</h3>
+<p>We will now analyze the trips made by day of the week and user type.</p>
+<pre class="r"><code># to graph trip count by day of the week by user type
+trips_user_wday &lt;- trip_data_cleaned %&gt;% 
+  select(day_of_week,member_casual) %&gt;% 
+  group_by(day_of_week,member_casual) %&gt;% 
+  mutate(count_trips = n()) %&gt;%
+  distinct(day_of_week,member_casual, .keep_all = TRUE)
+
+trips_user_wday$day_of_week &lt;- ordered(trips_user_wday$day_of_week, 
+                                      levels = c(&quot;Monday&quot;, &quot;Tuesday&quot;, &quot;Wednesday&quot;, &quot;Thursday&quot;, &quot;Friday&quot;, &quot;Saturday&quot;, &quot;Sunday&quot;))
+
+ggplot(data = trips_user_wday) +
+  geom_col(mapping = aes(x = day_of_week,y = count_trips, fill = str_to_title(member_casual)), 
+           position = &quot;dodge&quot;,
+           alpha = .6)+
+  labs(x = element_blank(), y = &quot;Number of Rides&quot;, fill = &quot;User type&quot;)+
+  scale_fill_viridis(discrete = TRUE) +
+  scale_y_continuous(labels = label_number_si())</code></pre>
+<p><img src="Analyse_files/figure-html/Trips%20per%20day%20of%20the%20week-1.png" width="768" /> Findings:</p>
+<p>As observed before, members use Cyclistic bikes more uniformly during the week. Demand from casual riders increase during the weekend, been Saturday the day with the highest demand.</p>
+</div>
+<div id="rides-per-week." class="section level3">
+<h3>4.5 - Rides per week.</h3>
+<p>First we prepare a dataset to reduce the load to process in order to plot our graphic.</p>
+<pre class="r"><code>trips_user_week &lt;- trip_data_cleaned %&gt;% 
+  select(week,year,member_casual) %&gt;% 
+  group_by(week,year,member_casual) %&gt;% 
+  mutate(count_trips = n()) %&gt;%
+  distinct(week,year,member_casual, .keep_all = TRUE)
+
+trips_user_week$week &lt;- as.numeric(trips_user_week$week)
+
+# To simplify the plot where a year change happens, we will add 53 to the week value of the following year
+# by this we avoid using a face_wrap() by year which will generate two bar graphs but the second one mostly
+# empty
+trips_user_week$week &lt;- ifelse(trips_user_week$year == &quot;2021&quot;, trips_user_week$week, trips_user_week$week + 53)</code></pre>
+<pre class="r"><code>ggplot(data = trips_user_week) +
+  geom_col(mapping = aes(x = week ,y = count_trips, fill = str_to_title(member_casual)), alpha = .6,position = &quot;dodge&quot;)+
+  labs(x = element_blank(), y = &quot;Number of Rides&quot;, fill = &quot;User type&quot;) +
+  scale_x_continuous(expand = c(0, 0), breaks = seq(01, 60, length = 14), 
+  labels = c(&quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&quot;, &quot;May&quot;, &quot;Jun&quot;, &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;, &quot;Oct&quot;, &quot;Nov&quot;, &quot;Dec&quot;,&quot;Jan&quot;,&quot;Feb&quot;)) +
+  scale_y_continuous(labels = label_number_si()) +
+  scale_fill_viridis(discrete = TRUE)+
+  theme_light()</code></pre>
+<p><img src="Analyse_files/figure-html/Plot%20of%20rides%20per%20week-1.png" width="768" /></p>
+<p>#Space left to make a graphic per rideable type, have to think the best way to make the data selection for this section.</p>
+</div>
+<div id="rides-per-hour-of-the-day." class="section level3">
+<h3>4.6 - Rides per hour of the day.</h3>
+<pre class="r"><code>trips_user_hour_wday &lt;- trip_data_cleaned %&gt;% 
+  select(day_of_week,member_casual,trip_length,started_at) %&gt;%
+  mutate(started_time = format(trip_data_cleaned$started_at, &quot;%H:%M&quot;)) %&gt;% 
+  group_by(day_of_week,member_casual) 
+
+trips_user_hour_wday$day_of_week &lt;- ordered(trips_user_hour_wday$day_of_week, 
+                                            levels = c(&quot;Monday&quot;, &quot;Tuesday&quot;, &quot;Wednesday&quot;, &quot;Thursday&quot;, &quot;Friday&quot;, &quot;Saturday&quot;, &quot;Sunday&quot;))
+
+str1 &lt;- &quot;2022-01-01&quot;
+str2 &lt;- &quot;:00&quot;
+
+trips_user_hour_wday$started_time &lt;- as.POSIXct(strptime(paste(str1, trips_user_hour_wday$started_time, str2, sep = &quot;&quot;), &quot;%Y-%m-%d %H:%M:%S&quot;))</code></pre>
+<pre class="r"><code>ggplot(data = trips_user_hour_wday, mapping = aes(x = started_time, y = day_of_week)) +
+  geom_density_ridges(aes(fill = str_to_title(member_casual)), alpha = .6) +
+  scale_fill_viridis(discrete = TRUE) +
+  scale_x_datetime(expand = c(0, 0), labels = date_format(&quot;%H:%M&quot;, tz = Sys.timezone(location = TRUE)), breaks = &quot;2 hour&quot;) +
+  labs(x = element_blank(), y = element_blank(), fill = &quot;User Type&quot;) +
+  facet_wrap(~str_to_title(member_casual), ncol = 1)</code></pre>
+<p><img src="Analyse_files/figure-html/unnamed-chunk-3-1.png" width="768" /></p>
+</div>
+<div id="trips-per-hour-of-the-day." class="section level3">
+<h3>4.7 - Trips per hour of the day.</h3>
+<pre class="r"><code># Group the time variable by hours
+trips_user_hour_wday$by_hour &lt;- cut(trips_user_hour_wday$started_time, breaks = &quot;60 mins&quot;)
+
+# Create data frame which counts the number of trips per hour for casual and member riders
+hour_circular_chart &lt;- trips_user_hour_wday %&gt;%
+  group_by(by_hour,member_casual) %&gt;%
+  mutate(numtrips_1000s = (n()/1000)) %&gt;%
+  distinct(by_hour, member_casual, numtrips_1000s) %&gt;% 
+  arrange(by_hour)</code></pre>
+<pre class="r"><code># Create a circular bar chart to show the popularity of each hour
+ggplot(hour_circular_chart) +
+  # Make custom panel grid 
+  geom_hline(aes(yintercept = y), data.frame(y = c(0:4) * 125), color = &quot;lightgrey&quot;) + 
+  # Create a stacked bar char
+  geom_bar(aes(x = by_hour, y = numtrips_1000s, fill = str_to_title(member_casual)), stat=&quot;identity&quot;) +
+  # Create circular shape which starts in the mid-line  
+  coord_polar(start = -0.135, direction = 1) + 
+  ylim(-600, 500) +
+  # Add x-axis labels 
+  annotate(x = 1, y = -50, label = &quot;00:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 2, y = -50, label = &quot;01:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 3, y = -50, label = &quot;02:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 4, y = -50, label = &quot;03:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 5, y = -50, label = &quot;04:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 6, y = -50, label = &quot;05:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 7, y = -50, label = &quot;06:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 8, y = -50, label = &quot;07:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 9, y = -50, label = &quot;08:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 10, y = -50, label = &quot;09:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 11, y = -50, label = &quot;10:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 12, y = -50, label = &quot;11:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 13, y = -50, label = &quot;12:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 14, y = -50, label = &quot;13:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 15, y = -50, label = &quot;14:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 16, y = -50, label = &quot;15:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 17, y = -50, label = &quot;16:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 18, y = -50, label = &quot;17:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 19, y = -50, label = &quot;18:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 20, y = -50, label = &quot;19:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 21, y = -50, label = &quot;20:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 22, y = -50, label = &quot;21:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 23, y = -50, label = &quot;22:00&quot;, geom = &quot;text&quot;, size = 2) +
+  annotate(x = 24, y = -50, label = &quot;23:00&quot;, geom = &quot;text&quot;, size = 2) +
+  # Annotate y-axis scaling labels 
+  annotate(x = 2, y = 125, label = &quot;125,000&quot;, geom = &quot;text&quot;, size = 2.5, angle = 345) +
+  annotate(x = 2, y = 250, label = &quot;250,000&quot;, geom = &quot;text&quot;, size = 2.5, angle = 345) +
+  annotate(x = 2, y = 375, label = &quot;375,000&quot;, geom = &quot;text&quot;, size = 2.5, angle = 345) +
+  annotate(x = 2, y = 500, label = &quot;500,000 trips&quot;, geom = &quot;text&quot;, size = 2.5, angle = 345) +
+  scale_fill_viridis_d() +
+  theme_light() +
+  theme(axis.title = element_blank(), axis.ticks = element_blank(), axis.text = element_blank(), legend.position = &quot;bottom&quot;, 
+        legend.title = element_blank())</code></pre>
+<p><img src="Analyse_files/figure-html/unnamed-chunk-5-1.png" width="768" /></p>
+</div>
+</div>
+<div id="ride-length-analysis." class="section level1">
+<h1>5 - Ride length analysis.</h1>
+<p>During the previous stage we found that some trips lasted over 24 hours, and a few of them lasted several days. In the previous steps of our analysis we have observed details from data of all trips, but we will put more specific data under the scope.</p>
+<p>Previously we noted that some trips last longer than 24 hours, some even go through several days. Even though these trips are real and could be caused by several factors, the prolonged duration of some of them could skew our analysis in a non representative way. We will observe the impact of keeping or removing these outliers from our study.</p>
+<pre class="r"><code>trip_data_cleaned %&gt;% 
+  summarize(mean(trip_length),min(trip_length),max(trip_length),sd(trip_length))</code></pre>
+<p>The maximum trip length shown equals to almost 39 days, and the standard deviation shown is significantly high.</p>
+<p>We will proceed to apply the Interquartile range approach to our trip length data.</p>
+<p>Our initial dataset has 4584724 observations</p>
+<pre class="r"><code>#IQR Interquartile Range to find outliers
+#The interquartile range is the central 50% or the area between the 75th and the 25th percentile of a distribution.
+#A point is an outlier if it is above the 75th or below the 25th percentile by a factor of 1.5 times the IQR. 
+
+Q &lt;- quantile(trip_data_cleaned$trip_length, probs=c(.25, .75), na.rm = FALSE)
+iqr &lt;- IQR(trip_data_cleaned$trip_length)
+up &lt;-  Q[2]+1.5*iqr # Upper Range  
+low &lt;- Q[1]-1.5*iqr # Lower Range
+
+outliers &lt;- subset(trip_data_cleaned, trip_data_cleaned$trip_length &lt; (Q[1] - 1.5*iqr) | trip_data_cleaned$trip_length &gt; (Q[2]+1.5*iqr))
+trip_data_no_outliers &lt;- subset(trip_data_cleaned, trip_data_cleaned$trip_length &gt; (Q[1] - 1.5*iqr) &amp; trip_data_cleaned$trip_length &lt; (Q[2]+1.5*iqr))</code></pre>
+<p>Using the IQR approach we would remove 348761 observations and the new basic statisticall data would be as follows:</p>
+<pre class="r"><code>trip_data_no_outliers %&gt;% 
+  summarize(mean(trip_length),min(trip_length),max(trip_length),sd(trip_length))</code></pre>
+<pre class="r"><code>outliers &lt;- boxplot(trip_data_cleaned$trip_length, plot=FALSE)$out
+
+trip_data_no_outliers &lt;-trip_data_cleaned[-which(trip_data_cleaned$trip_length %in% outliers),]</code></pre>
+<p>##make decision with the team as if to keep or not the outliers for our analysis. ## After making a decision we can</p>
+<p>We have 348761 outliers, removing them will leave 4235963 observations which represents 92.4% of the original data.</p>
+<div id="average-ride-length." class="section level3">
+<h3>5.1 - Average ride length.</h3>
+<p>By day of the week.</p>
+<pre class="r"><code>trips_user_wday &lt;- trip_data_no_outliers %&gt;% 
+  select(day_of_week,member_casual,trip_length) %&gt;% 
+  group_by(day_of_week,member_casual) %&gt;% 
+  mutate(count_trips = n(), average_length = mean(trip_length)) %&gt;%
+  distinct(day_of_week,member_casual, .keep_all = TRUE)
+
+trips_user_wday$day_of_week &lt;- ordered(trips_user_wday$day_of_week, 
+                                       levels = c(&quot;Monday&quot;, &quot;Tuesday&quot;, &quot;Wednesday&quot;, &quot;Thursday&quot;, &quot;Friday&quot;, &quot;Saturday&quot;, &quot;Sunday&quot;,&quot;Jan&quot;,&quot;Feb&quot;))
+
+ggplot(data = trips_user_wday) +
+  geom_col(mapping = aes(x = day_of_week,y = average_length, fill = str_to_title(member_casual)), alpha =.6 ,position = &quot;dodge&quot;)+
+  labs(x = element_blank(), y = &quot;Average Length&quot;, fill = &quot;User type&quot;) +
+  scale_fill_viridis(discrete = TRUE)</code></pre>
+<p><img src="Analyse_files/figure-html/Ride%20length%20user/day%20of%20the%20week-1.png" width="768" /></p>
+<p>By week.</p>
+<pre class="r"><code>trips_user_week &lt;- trip_data_no_outliers %&gt;% 
+  select(week, year, member_casual,trip_length) %&gt;% 
+  group_by(week, year, member_casual) %&gt;% 
+  mutate(count_trips = n(), average_length = mean(trip_length)) %&gt;%
+  distinct(week, year, member_casual, .keep_all = TRUE)
+
+trips_user_week$week &lt;- as.numeric(trips_user_week$week)
+
+# To simplify the plot where a year change happens, we will add 53 to the week value of the following year
+# by this we avoid using a face_wrap() by year which will generate two bar graphs but the second one mostly
+# empty
+trips_user_week$week &lt;- ifelse(trips_user_week$year == &quot;2021&quot;, trips_user_week$week, trips_user_week$week + 53)</code></pre>
+<pre class="r"><code># Line chart
+
+ggplot(data = trips_user_week, aes(x = week, y = average_length, group = member_casual)) +
+  geom_line(aes(color = member_casual), alpha = .6) +
+  labs(x = element_blank(), y = &quot;Average Duration&quot;, fill = &quot;User type&quot;)+
+  scale_x_continuous(expand = c(0, 0),breaks = seq(01, 60, length = 14), 
+                     labels = c(&quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&quot;, &quot;May&quot;, &quot;Jun&quot;, &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;, &quot;Oct&quot;, &quot;Nov&quot;, &quot;Dec&quot;, &quot;Jan&quot;, &quot;Feb&quot;)) +
+  scale_y_continuous(labels = label_number_si()) +
+  theme_light()</code></pre>
+<p><img src="Analyse_files/figure-html/unnamed-chunk-8-1.png" width="768" /></p>
+<pre class="r"><code>ggplot(data = trips_user_week, aes(x = week, y = average_length, group = member_casual)) +
+  geom_area(aes(fill = member_casual),position = &quot;identity&quot;, alpha = .5) +
+  labs(x = element_blank(), y = &quot;Average Duration&quot;, fill = &quot;User type&quot;)+
+  scale_x_continuous(expand = c(0, 0),breaks = seq(01, 60, length = 14), 
+                     labels = c(&quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&quot;, &quot;May&quot;, &quot;Jun&quot;, &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;, &quot;Oct&quot;, &quot;Nov&quot;, &quot;Dec&quot;, &quot;Jan&quot;, &quot;Feb&quot;)) +
+  scale_y_continuous(labels = label_number_si()) +
+  scale_fill_viridis(discrete = TRUE)+
+  theme_light()</code></pre>
+<p><img src="Analyse_files/figure-html/unnamed-chunk-9-1.png" width="768" /></p>
+</div>
+</div>
+<div id="stations" class="section level1">
+<h1>6 - Stations</h1>
+<pre class="r"><code># Data frame that groups trips per station and lat/long
+
+map_data &lt;- trip_data_cleaned %&gt;%
+  select(start_station_name, start_lat, start_lng) %&gt;%
+  group_by(start_station_name) %&gt;%
+  mutate(count_trips = n()) %&gt;%
+  distinct(start_station_name, .keep_all = TRUE)
+
+#sequence of values that will act as a key to show on the leaflet and group stations that have similar number of trips occurring closely
+mybins &lt;- seq(0, 50000, by = 10000)
+
+#viridis palette to show how popular is the station
+station_palette &lt;- colorBin(palette =&quot;viridis&quot;, domain = map_data$count_trips, na.color = &quot;transparent&quot;, bins = mybins)
+
+#text for interactive tooltip
+station_text &lt;- paste(&quot;Station name: &quot;, map_data$start_station_name, &quot;&lt;br/&gt;&quot;, &quot;Number of trips: &quot;, map_data$count_trips, sep = &quot;&quot;) %&gt;%
+  lapply(htmltools::HTML)</code></pre>
+<pre class="r"><code>station_leaflet &lt;- leaflet(map_data) %&gt;% 
+  addTiles() %&gt;%
+  # Coordinates over the city of Chicago searched in google
+  setView(lng = -87.6298, lat = 41.8781, zoom = 11) %&gt;% 
+  # Setting map style 
+  addProviderTiles(&quot;Esri.WorldGrayCanvas&quot;) %&gt;%
+  # Add circle markers to represent each station 
+  # &amp; add a fill color to show the popularity of each station 
+  # &amp; add an interactive tooltip for detail
+  addCircleMarkers(~start_lng, ~start_lat, fillColor = ~station_palette(count_trips), fillOpacity = 0.7, color = &quot;white&quot;, 
+    radius = 8, stroke = FALSE, label = station_text, labelOptions = labelOptions(style = list(&quot;font-weight&quot; = &quot;normal&quot;, padding = &quot;3px 8px&quot; ), 
+    textsize = &quot;13px&quot;, direction = &quot;auto&quot;)) %&gt;%
+  # Adding a legend 
+  addLegend(pal = station_palette, values = ~count_trips, opacity = 0.9, title = &quot;Number of trips&quot;, position = &quot;bottomright&quot;)
+
+station_leaflet</code></pre>
+<div id="saving-datasets-generated-for-future-use." class="section level3">
+<h3>7 - Saving datasets generated for future use.</h3>
+<pre class="r"><code>#Saving cleaned dataset
+fwrite(trip_data_cleaned, file = &quot;trip_data_cleaned.csv&quot;, col.names = TRUE, row.name = FALSE)</code></pre>
+<pre class="r"><code>#Saving dataset with no outliers
+fwrite(trip_data_no_outliers, file = &quot;trip_data_no_outliers.csv&quot;, col.names = TRUE, row.name = FALSE)</code></pre>
+<pre class="r"><code>#Saving outliers dataset
+fwrite(outliers, file = &quot;outliers.csv&quot;, col.names = TRUE, row.name = FALSE)</code></pre>
+</div>
+</div>
+</div>
+
+   
+   
+              </div>
+  </div>
+  </div>
+  </div>
+   
+      
+
+  <script>
+    $(document).ready(function () {
+
+		// add bootstrap table styles to pandoc tables
+	$('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+		
+ 		
+	    });
+  </script>
+
+
+
+    <!-- dynamically load mathjax for compatibility with self-contained -->
+  <script>
+    (function () {
+	var script = document.createElement("script");
+	script.type = "text/javascript";
+	script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+	document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+  </script>
+  
+</body>
+</html>

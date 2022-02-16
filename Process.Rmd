@@ -1,0 +1,491 @@
+---
+title: <br> 
+  Process 
+author: "Pablo Solis"
+date: "2/10/2022"
+output:   
+  rmdformats::downcute:
+    downcute_theme: "chaos"
+    self_contained: true
+---
+
+
+```{r setup, include=FALSE}
+library(knitr)
+library(rmdformats)
+## Global options
+options(max.print = "75")
+opts_chunk$set(echo = TRUE,
+               prompt = FALSE,
+               comment = NA,
+               message = FALSE,
+               warning = FALSE, 
+               results = "hide")
+opts_knit$set(width=75)
+```
+
+
+
+# Process  
+
+
+For this first data analysis project I will use R and Rstudio as my principal tool. Two main reasons for the selection, the first one is that is a new programming language for me. I was given a brief introduction to R and RStudio while completing the previous courses for the Professional Certificate, and will be using this opportunity to develop this new skills. The second reason is that the other tools presented during the course would not be able to handle the size of the data to analyze (Excel), or could not provide an efficient way to generate the visualizations required (SQL).
+
+After gathering the data and checking that its appropriate to provide a solution to the business task in hand, the next step is to process it. In this step we will make sure the data is not only reliable and comes from a trustworthy source, but that it is also in the correct format and it contains accurate data.
+
+# 1 - Preparing our working environment.
+### 1.1 - Installing required packages.
+
+```{r Installing required packages., eval = FALSE}
+
+# we use tidyverse for most of the data wrangling
+install.packages("tidyverse")
+# we use janitor for functions  get_dupes(), clean_names()
+install.packages("janitor")
+# we use skimr for skim_without_charts()
+install.packages("skimr")
+
+```
+
+
+### 1.2 - Loading packages.
+
+```{r Loading packages}
+
+library(tidyverse)
+library(ggplot2)
+library(janitor)
+library(skimr)
+library(data.table)
+
+```
+
+
+# 2 - Loading data.
+
+```{r Loading data}
+
+trip_data_202201 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202201-divvy-tripdata.csv")
+trip_data_202112 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202112-divvy-tripdata.csv")
+trip_data_202111 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202111-divvy-tripdata.csv")
+trip_data_202110 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202110-divvy-tripdata.csv")
+trip_data_202109 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202109-divvy-tripdata.csv")
+trip_data_202108 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202108-divvy-tripdata.csv")
+trip_data_202107 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202107-divvy-tripdata.csv")
+trip_data_202106 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202106-divvy-tripdata.csv")
+trip_data_202105 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202105-divvy-tripdata.csv")
+trip_data_202104 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202104-divvy-tripdata.csv")
+trip_data_202103 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202103-divvy-tripdata.csv")
+trip_data_202102 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202102-divvy-tripdata.csv")
+
+```
+
+On the "Prepare" process we took a first glimpse at the structure of the data contained in the twelve files.
+
+We will combine all datasets to conduct our analysis, to do that we first have to make sure all the files have the same number/type of columns and the data is presented in the correct order.
+
+
+### 2.1 - Column consistency check between the files.
+
+```{r Comparing columns, results = "show"}
+
+compare_df_cols(trip_data_202201, trip_data_202112, trip_data_202111, trip_data_202110, trip_data_202109, trip_data_202108, trip_data_202107, trip_data_202106, trip_data_202105, trip_data_202104, trip_data_202103, trip_data_202102, return = "mismatch")
+
+```
+
+We obtain zero results, which indicates that all the columns are consistent on data type.
+
+### 2.2 - Checking datasets metadata.
+
+This step will go through the files, one by one, checking the datasets metadata. We will be using functions from the packages ***tidyverse*** and ***skimr*** to find valuable information *(like completion rate for example)*.
+
+We will be showing the reuslts for the first month only but during our analysis, all months were looked into.
+
+January 2022:
+
+```{r January 2022, results = "show"}
+
+str(trip_data_202201)
+colnames(trip_data_202201)
+skim_without_charts(trip_data_202201)
+
+```
+
+December 2021:
+
+```{r December 2021}
+
+str(trip_data_202112)
+colnames(trip_data_202112)
+skim_without_charts(trip_data_202112)
+
+```
+
+November 2021:
+
+```{r November 2021}
+
+str(trip_data_202111)
+colnames(trip_data_202111)
+skim_without_charts(trip_data_202111)
+
+```
+
+October 2021:
+
+```{r October 2021}
+
+str(trip_data_202110)
+colnames(trip_data_202110)
+skim_without_charts(trip_data_202110)
+
+```
+
+September 2021:
+
+```{r September 2021}
+
+str(trip_data_202109)
+colnames(trip_data_202109)
+skim_without_charts(trip_data_202109)
+
+```
+
+August 2021:
+
+```{r August 2021}
+
+str(trip_data_202108)
+colnames(trip_data_202108)
+skim_without_charts(trip_data_202108)
+
+```
+
+July 2021:
+
+```{r July 2021}
+
+str(trip_data_202107)
+colnames(trip_data_202107)
+skim_without_charts(trip_data_202107)
+
+```
+
+June 2021:
+
+```{r June 2021}
+
+str(trip_data_202106)
+colnames(trip_data_202106)
+skim_without_charts(trip_data_202106)
+
+```
+
+May 2021:
+
+```{r May 2021}
+
+str(trip_data_202105)
+colnames(trip_data_202105)
+skim_without_charts(trip_data_202105)
+
+```
+
+Apr 2021:
+
+```{r Apr 2021}
+
+str(trip_data_202104)
+colnames(trip_data_202104)
+skim_without_charts(trip_data_202104)
+
+```
+
+Mar 2021:
+
+```{r Mar 2021}
+
+str(trip_data_202103)
+colnames(trip_data_202103)
+skim_without_charts(trip_data_202103)
+
+```
+
+Feb 2021:
+
+```{r Feb 2021}
+
+str(trip_data_202102)
+colnames(trip_data_202102)
+skim_without_charts(trip_data_202102)
+
+```
+
+
+After a quick review of the metadata, we can obtain valuable information, data types on the columns, completion rate, and a noticeable detail, the "ended_at" data in several months overlaps into the next month by several days.
+
+
+### 2.3 - Initial Findings:
+
+* All .csv files contain consistent column names and data.
+* All loaded datasets share commonalities in their data for example:
+    + 7 Character Columns: id of the ride, rideable type, start and end station id and name and the last column is the type of rider.
+    + 4 Numeric Columns: corresponding to lat/long data for both start and end stations.
+    + 2 Date time columns: start and end time of the ride.
+* All datasets have consistent data on the fields "ride_id", "rideable_type", "member_casual", "started_at", and "ended_at".
+* Missing data present on all datasets on the same fields:
+    + After checking completion rate with the `skim_without_charts()` function and sampling data on the datasets using the `View()` function, we can observe several missing values in the columns:
+        + start_station_name
+        + start_station_id
+        + end_station_name
+        + end_station_id
+        + start_lat
+        + start_lng
+        + end_lat
+        + end_lng
+* Inconsistent values of latitude/longitude:
+     + Upon further analysis of the data, we can verify the precision of the coordinates given, varies in several degrees of precision, some stations id/names are associated with different coordinates on some trips. The data given have from zero decimals of precision up to 5 or more.
+
+
+# 3 - Handling missing data. 
+### **(Contains assumptions made in order to proceed with further analysis)**
+
+We present our initial findings to the Marketing analytics team, we provide information about the fields with missing data, the completion rate of the columns and additional information about our findings.
+
+We took some time to check the data on the generated tables and observed several entries missing information about the stations, most of them have latitude and longitude records with a smaller precision than the stations with no missing data. As mentioned in our initial findings, this could be the reason why the station has not been identified by our logging system.
+
+Before making a decision, we will check how removing the rows with missing data would affect our overall data.
+
+We will first merge all data sets into a larger one and then run the `skim_without_charts()` function to the new dataset.
+
+### 3.1 - Combining all data.
+
+```{r Combining all data}
+
+all_trip_data <- bind_rows(trip_data_202201, trip_data_202112, trip_data_202111, trip_data_202110, 
+                           trip_data_202109, trip_data_202108, trip_data_202107, trip_data_202106, 
+                           trip_data_202105, trip_data_202104, trip_data_202103, trip_data_202102)
+skim_without_charts(all_trip_data)
+
+```
+
+
+### 3.2 - Cleaning column names.
+
+
+```{r Cleaning column names, results = "show"}
+
+clean_names(all_trip_data)
+
+```
+
+### 3.3 - Checking for duplicates.
+
+```{r results = "show"}
+
+get_dupes(all_trip_data)
+
+```
+
+We get zero rows as result, the table contains no duplicates.
+
+Some housekeeping in order to remove no longer needed data for our analysis.
+We make sure the original data files are available before we proceed to remove the data from our workspace.
+
+```{r Removing data no longer needed}
+
+rm(trip_data_202201)
+rm(trip_data_202112)
+rm(trip_data_202111)
+rm(trip_data_202110)
+rm(trip_data_202109)
+rm(trip_data_202108)
+rm(trip_data_202107)
+rm(trip_data_202106)
+rm(trip_data_202105)
+rm(trip_data_202104)
+rm(trip_data_202103)
+rm(trip_data_202102)
+
+```
+
+
+### 3.4 - Calculating trip length
+
+Now we will generate a new column with the length of each trip, so we can analyze this data and the impact of removing the rows with missing values. Additionally we will transform length data type from drtn to numeric.
+
+
+```{r Trip length}
+
+all_trip_data$trip_length <- difftime(all_trip_data$ended_at, all_trip_data$started_at, units = "secs")
+all_trip_data$trip_length <- as.numeric(all_trip_data$trip_length)
+
+```
+
+We find 5601999 Observations.
+We take a view at the data in the trip_length column.
+
+```{r results = "show"}
+
+all_trip_data %>% 
+  summarize(mean(trip_length),min(trip_length),max(trip_length))
+
+```
+
+
+We notice there are trips with negative duration. Since a real trip can not have negative duration we present our findings to the team to have an agreement. After confirmation, this data is removed from the dataset.
+
+```{r Removing trips with 0 or negative duration}
+
+all_trip_data <- all_trip_data %>% 
+  filter(trip_length > 0)
+
+```
+
+We are left with 5601347 observations.
+We ran again a simple analysis of the data in the duration column and notice all positive values now.
+
+```{r results = "show"}
+
+all_trip_data %>% 
+  summarize(mean(trip_length),min(trip_length),max(trip_length),sd(trip_length))
+
+```
+
+### 3.5 - Removing rows with missing data.
+
+Next step would be to analyze the dataset without missing data.
+
+*Had to do some research to find the optimal way to remove data with missing values* [This website provided valuable information.](https://argoshare.is.ed.ac.uk/healthyr_book/missing-values-nas-and-filters.html)
+
+
+```{r Removing rows with missing data}
+
+all_trip_data_clean <- all_trip_data %>% 
+  filter(!(is.na(start_station_name) | start_station_name == "")) %>% 
+  filter(!(is.na(end_station_name) | end_station_name == ""))
+skim_without_charts(all_trip_data_clean)
+
+```
+
+We are left with 4584724 observations.
+
+```{r}
+
+all_trip_data_clean %>% 
+  summarize(mean(trip_length),min(trip_length),max(trip_length),sd(trip_length))
+
+```
+
+
+Upon analysis of the data the team agrees that removing the rows with missing data wont negatively affect the study.
+
+A decision is made, and given the otherwise high rate of completion of the fields, we will remove the observation with missing data from our analysis. Additionally we will *add a task* to find the reason behind the missing information from our tracking system.
+
+Finding the cause of the problem and fixing it would reduce our workload in the future.***(In this scenario Cyclistic Data Analytics team is in charge of the data collection process)***
+
+
+# 4 - Integrity check.
+
+We have a completion rate of 1 in all columns, which means there is no longer missing data, we will now proceed to verify the data is correct.
+
+### 4.1 - Rideable type.
+
+
+```{r Rideable type, results = "show"}
+
+rideable_type <- unique(all_trip_data_clean$rideable_type)
+rideable_type
+
+```
+
+We observe in the data 3 types of rideables:
+
+  * Classic Bike
+  * Electric Bike
+  * Docked Bike
+  
+Since the rideable types differ from the ones mentioned in the scenario documentation, we will take note of our findings and clarify the discrepancy with the team.
+
+### 4.2 - Start/End time.
+
+From the result of our previous `skim_without_charts()` analysis, we can verify all date-time data is correct in format and is within the range of time of our analysis.
+
+### 4.3 - User type.
+
+```{r User type, results = "show"}
+
+user_type <- unique(all_trip_data_clean$member_casual)
+user_type
+
+```
+
+We observe only two values are present:
+
+  * Member
+  * Casual
+  
+Since the User types differ from the ones mentioned in the scenario documentation, we will take note of our findings and clarify the discrepancy with the team.
+
+### 4.4 - Station data.
+
+At this point we have most of the data cleaned, We have to check the integrity of the information about the stations.
+
+We have been given the information about the number of stations that Cyclistic has, we will generate a list of the stations present in the dataset.
+
+```{r Generate list of stations in the dataset }
+
+# The first two code lines aggregate all the unique station names mentioned in columns " start_station_name" and "end_station_name"
+stations <- unique(all_trip_data_clean$start_station_name)
+stations <- c(stations,unique(all_trip_data_clean$end_station_name))
+# The following step would remove the duplicate values on the vector, stations that were used as a start station and an end station.
+stations <- unique(stations)
+# we use the str() function only to take a look at the first values and to show the size of the vector.
+str(stations)
+
+```
+
+We find information about 847 stations been used in the data set.
+Since the initial information we received included a number of stations of 692, we proceed to verify the information with the team. We bring the list of the unique stations found on the dataset.
+
+### **(Contains assumptions made in order to proceed with further analysis)**
+
+
+After meeting with the other members of Cyclistic's Marketing Analytics Team, we obtain confirmation of the rideable and user types, and agree to meet with the operations department to clarify the station data.
+
+After presenting our findings to the operations department, we have confirmation that the number of active stations has increased to 847 and the Station ID codes are correct. The operations department confirms the coordinates are accurate and the slight differences are within the margin of error of the position tracking devices.
+
+With this confirmation we have concluded the data cleaning process.
+
+# 5 - Saving our data.
+
+### 5.1 - Saving cleaned dataset:
+
+
+```{r Saving cleaned dataset, eval = FALSE}
+
+#Saving cleaned dataset
+fwrite(all_trip_data_clean, file = "trip_data_clean.csv", col.names = TRUE, row.name = FALSE)
+
+```
+
+### 5.2 - Saving other datasets generated for future use.
+
+```{r Saving raw data, eval = FALSE}
+#Saving uncleaned dataset
+fwrite(all_trip_data, file = "all_trip_data.csv", col.names = TRUE, row.name = FALSE)
+
+```
+
+### 5.3 - Removing data from our workspace.
+
+```{r Removing data no longer needed 2}
+
+rm(all_trip_data_clean)
+rm(stations)
+rm(all_trip_data)
+
+```
+
+
+

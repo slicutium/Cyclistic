@@ -1,0 +1,115 @@
+---
+title: <br> 
+  Prepare 
+author: "Pablo Solis"
+date: "2/10/2022"
+output:   
+  rmdformats::downcute:
+    downcute_theme: "chaos"
+    self_contained: true
+---
+
+
+```{r setup, include=FALSE}
+library(knitr)
+library(rmdformats)
+## Global options
+options(max.print = "75")
+opts_chunk$set(echo = TRUE,
+               prompt = FALSE,
+               comment = NA,
+               message = FALSE,
+               warning = FALSE, 
+               results = "hide")
+opts_knit$set(width=75)
+```
+
+
+
+# Prepare  
+
+We will use Cyclistic’s historical trip data to analyze and identify trends.
+The data is hosted at Cyclistic's cloud data storage [link].(https://divvy-tripdata.s3.amazonaws.com/index.html) (Note: The datasets have a different name because Cyclistic is a fictional company. For the purposes of this case study, the datasets are appropriate and will enable us to answer the business task in hand. The data has been made available by Lyft Bikes and Scooters, LLC under this [license](https://ride.divvybikes.com/data-license-agreement).
+
+This is public data that we can use to explore how different customer types are using Cyclistic bikes. But note that data-privacy regulations prohibit us from using riders’ personally identifiable information. This means that we won’t be able to connect pass purchases to credit card numbers to determine if casual riders live in the Cyclistic service area or if they have purchased multiple single passes.
+
+# Data Organization
+
+The data is organized in different .zip files, there is data from the year 2013 to early 2022. Some of the files organize the data per year, others per quarter and the most recent, per month. We are asked to analyze the most recent 12 months of data, the analysis process began in February 2022, therefore we will be working with 12 .zip files with data from February 2021 to January 2022.
+
+Please note that Cyclistic is a fictional company.The data has been collected by Lyft Bikes and Scooters, LLC("Bikeshare"), the company which operates the City of Chicago’s Divvy bicycle sharing service.
+
+The dataset description can be found [here](https://ride.divvybikes.com/system-data).
+
+Each .Zip file contains a .csv file with the data to be analyzed.
+After downloading and extracting the .csv files into a local repository, we will proceed to import them to RStudio.
+
+# Loading Data
+
+Loading required packages:
+
+```{r Loading packages}
+
+library(tidyverse)
+```
+
+Loading data:
+
+```{r Loading data}
+
+trip_data_202201 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202201-divvy-tripdata.csv")
+trip_data_202112 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202112-divvy-tripdata.csv")
+trip_data_202111 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202111-divvy-tripdata.csv")
+trip_data_202110 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202110-divvy-tripdata.csv")
+trip_data_202109 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202109-divvy-tripdata.csv")
+trip_data_202108 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202108-divvy-tripdata.csv")
+trip_data_202107 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202107-divvy-tripdata.csv")
+trip_data_202106 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202106-divvy-tripdata.csv")
+trip_data_202105 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202105-divvy-tripdata.csv")
+trip_data_202104 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202104-divvy-tripdata.csv")
+trip_data_202103 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202103-divvy-tripdata.csv")
+trip_data_202102 <- read_csv("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/Cyclistic/202102-divvy-tripdata.csv")
+
+
+```
+
+Checking the data structure:
+
+```{r Initial look at the data structure}
+
+str(trip_data_202201)
+str(trip_data_202112)
+str(trip_data_202111)
+str(trip_data_202110)
+str(trip_data_202109)
+str(trip_data_202108)
+str(trip_data_202107)
+str(trip_data_202106)
+str(trip_data_202105)
+str(trip_data_202104)
+str(trip_data_202103)
+str(trip_data_202102)
+
+```
+
+
+After our initial look at the data structure, and visually checking some of the data using the `View()` function, we can state that the actual data differs from the provided dataset description.
+
+The dataset provides:
+
+* Ride id, with character data type.^1^
+* Rideable type, with character data type.^1^ 
+* Trip start day and ime, with date time data type.
+* Trip end day and time, with date time data type.
+* Start station id, with character data type.^1^
+* Start station name, with character data type.
+* End station id, with character data type.^1^
+* End station name, with character data type.
+* Trip start coordinates divided in latitude and longitude, with numeric datatype.^1^
+* Trip end coordinates divided in latitude and longitude, with numeric datatype.^1^
+* Type of user, with character data type. ^2^
+
+
+
+<font size="1"> ^1^*data not mentioned on the original dataset description*</font><br> 
+<font size="1"> ^2^*only differentiates between members and casual users, which differs from the original dataset description*</font> 

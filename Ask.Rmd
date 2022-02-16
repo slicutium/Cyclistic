@@ -1,0 +1,39 @@
+---
+title: <br> 
+  Ask 
+author: "Pablo Solis"
+date: "2/10/2022"
+output:   
+  rmdformats::downcute:
+    downcute_theme: "chaos"
+    self_contained: true
+---
+
+
+```{r setup, include=FALSE}
+library(knitr)
+library(rmdformats)
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=FALSE,
+               prompt=FALSE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE, 
+               results="hide")
+opts_knit$set(width=75)
+```
+
+# Ask  
+
+Three questions will guide the future marketing program:
+
+1. How do annual members and casual riders use Cyclistic bikes differently?
+2. Why would casual riders buy Cyclistic annual memberships?
+3. How can Cyclistic use digital media to influence casual riders to become members?
+
+**Moreno** has assigned **you** the first question to answer:
+
+* How do annual members and casual riders use Cyclistic bikes differently?
+
+

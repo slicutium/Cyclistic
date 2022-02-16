@@ -1,0 +1,19 @@
+name: "Cyclistic Data Analysis"
+navbar:
+
+  title: "Cyclistic Data Analysis"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Ask"
+      href: Ask.html
+    - text: "Prepare"
+      href: Prepare.html
+    - text: "Process"
+      href: Process.html
+    - text: "Analyse"
+      href: Analyse.html
+    - text: "Share"
+      href: Share.html
+
+output_dir: "docs"
