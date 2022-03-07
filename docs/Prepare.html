@@ -184,13 +184,13 @@
 <div class="page-content has-page-title">
 <div id="prepare" class="section level1">
 <h1>Prepare</h1>
-<p>We will use Cyclistic’s historical trip data to analyze and identify trends. The data is hosted at Cyclistic’s cloud data storage [link].(<a href="https://divvy-tripdata.s3.amazonaws.com/index.html" class="uri">https://divvy-tripdata.s3.amazonaws.com/index.html</a>) (Note: The datasets have a different name because Cyclistic is a fictional company. For the purposes of this case study, the datasets are appropriate and will enable us to answer the business task in hand. The data has been made available by Lyft Bikes and Scooters, LLC under this <a href="https://ride.divvybikes.com/data-license-agreement">license</a>.</p>
-<p>This is public data that we can use to explore how different customer types are using Cyclistic bikes. But note that data-privacy regulations prohibit us from using riders’ personally identifiable information. This means that we won’t be able to connect pass purchases to credit card numbers to determine if casual riders live in the Cyclistic service area or if they have purchased multiple single passes.</p>
+<p>We will use Cyclistic’s historical trip data to analyze and identify trends. The data is hosted at Cyclistic’s cloud data storage <a href="https://divvy-tripdata.s3.amazonaws.com/index.html">link</a>. (Note: The datasets have a different name because Cyclistic is a fictional company. For the purposes of this case study, the datasets are appropriate and will enable us to answer the business task at hand. The data has been made available by Lyft Bikes and Scooters, LLC under this <a href="https://ride.divvybikes.com/data-license-agreement">license</a>.</p>
+<p>This is public data that we can use to explore how different customer types are using Cyclistic bikes. But note that data-privacy regulations prohibit us from using riders’ personally identifiable information. This means that we won’t be able to connect past purchases to credit card numbers to determine if casual riders live in the Cyclistic service area or if they have purchased multiple single passes.</p>
 </div>
 <div id="data-organization" class="section level1">
 <h1>Data Organization</h1>
-<p>The data is organized in different .zip files, there is data from the year 2013 to early 2022. Some of the files organize the data per year, others per quarter and the most recent, per month. We are asked to analyze the most recent 12 months of data, the analysis process began in February 2022, therefore we will be working with 12 .zip files with data from February 2021 to January 2022.</p>
-<p>Please note that Cyclistic is a fictional company.The data has been collected by Lyft Bikes and Scooters, LLC(“Bikeshare”), the company which operates the City of Chicago’s Divvy bicycle sharing service.</p>
+<p>The data is organized in different .zip files, there is data from the year 2013 to early 2022. Some of the files organize the data per year, others per quarter, and the most recent, per month. We are asked to analyze the most recent 12 months of data, the analysis process began in February 2022, therefore we will be working with 12 .zip files with data from February 2021 to January 2022.</p>
+<p>Please note that Cyclistic is a fictional company. The data has been collected by Lyft Bikes and Scooters, LLC(“Bikeshare”), the company which operates the City of Chicago’s Divvy bicycle-sharing service.</p>
 <p>The dataset description can be found <a href="https://ride.divvybikes.com/system-data">here</a>.</p>
 <p>Each .Zip file contains a .csv file with the data to be analyzed. After downloading and extracting the .csv files into a local repository, we will proceed to import them to RStudio.</p>
 </div>
@@ -229,8 +229,8 @@ str(trip_data_202102)</code></pre>
 <ul>
 <li>Ride id, with character data type.<sup>1</sup></li>
 <li>Rideable type, with character data type.<sup>1</sup></li>
-<li>Trip start day and ime, with date time data type.</li>
-<li>Trip end day and time, with date time data type.</li>
+<li>Trip start day and time, with date-time data type.</li>
+<li>Trip end day and time, with date-time data type.</li>
 <li>Start station id, with character data type.<sup>1</sup></li>
 <li>Start station name, with character data type.</li>
 <li>End station id, with character data type.<sup>1</sup></li>

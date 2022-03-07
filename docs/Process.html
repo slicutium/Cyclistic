@@ -187,8 +187,8 @@
 <div class="page-content has-page-title">
 <div id="process" class="section level1">
 <h1>Process</h1>
-<p>For this first data analysis project I will use R and Rstudio as my principal tool. Two main reasons for the selection, the first one is that is a new programming language for me. I was given a brief introduction to R and RStudio while completing the previous courses for the Professional Certificate, and will be using this opportunity to develop this new skills. The second reason is that the other tools presented during the course would not be able to handle the size of the data to analyze (Excel), or could not provide an efficient way to generate the visualizations required (SQL).</p>
-<p>After gathering the data and checking that its appropriate to provide a solution to the business task in hand, the next step is to process it. In this step we will make sure the data is not only reliable and comes from a trustworthy source, but that it is also in the correct format and it contains accurate data.</p>
+<p>For this first data analysis project, I will use R and Rstudio as my principal tool. Two main reasons for the selection, the first one is that is a new programming language for me. I was given a brief introduction to R and RStudio while completing the previous courses for the Professional Certificate and will be using this opportunity to develop these new skills. The second reason is that the other tools presented during the course would not be able to handle the size of the data to analyze (Excel), or could not provide an efficient way to generate the visualizations required (SQL).</p>
+<p>After gathering the data and checking that it’s appropriate to provide a solution to the business task at hand, the next step is to process it. In this step we will make sure the data is not only reliable and comes from a trustworthy source, but that it is also in the correct format and it contains accurate data.</p>
 </div>
 <div id="preparing-our-working-environment." class="section level1">
 <h1>1 - Preparing our working environment.</h1>
@@ -234,12 +234,12 @@ trip_data_202102 &lt;- read_csv(&quot;C:/Users/sicox/Documents/Google Data Analy
  [9] trip_data_202106 trip_data_202105 trip_data_202104 trip_data_202103
 [13] trip_data_202102
 &lt;0 rows&gt; (or 0-length row.names)</code></pre>
-<p>We obtain zero results, which indicates that all the columns are consistent on data type.</p>
+<p>We obtain zero results, which indicates that all the columns are consistent on the data type.</p>
 </div>
 <div id="checking-datasets-metadata." class="section level3">
 <h3>2.2 - Checking datasets metadata.</h3>
-<p>This step will go through the files, one by one, checking the datasets metadata. We will be using functions from the packages <strong><em>tidyverse</em></strong> and <strong><em>skimr</em></strong> to find valuable information <em>(like completion rate for example)</em>.</p>
-<p>We will be showing the reuslts for the first month only but during our analysis, all months were looked into.</p>
+<p>This step will go through the files, one by one, checking the dataset’s metadata. We will be using functions from the packages <strong><em>tidyverse</em></strong> and <strong><em>skimr</em></strong> to find valuable information <em>(like completion rate for example)</em>.</p>
+<p>We will be showing the results for the first month only but during our analysis, all months were looked into.</p>
 <p>January 2022:</p>
 <pre class="r"><code>str(trip_data_202201)</code></pre>
 <pre><code>spec_tbl_df [103,770 x 13] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
@@ -566,7 +566,7 @@ skim_without_charts(trip_data_202103)</code></pre>
 <pre class="r"><code>str(trip_data_202102)
 colnames(trip_data_202102)
 skim_without_charts(trip_data_202102)</code></pre>
-<p>After a quick review of the metadata, we can obtain valuable information, data types on the columns, completion rate, and a noticeable detail, the “ended_at” data in several months overlaps into the next month by several days.</p>
+<p>After a quick review of the metadata, we can obtain valuable information, data types on the columns, completion rate, and a noticeable detail, the “ended_at” data in several months overlap into the next month by several days.</p>
 </div>
 <div id="initial-findings" class="section level3">
 <h3>2.3 - Initial Findings:</h3>
@@ -574,7 +574,7 @@ skim_without_charts(trip_data_202102)</code></pre>
 <li>All .csv files contain consistent column names and data.</li>
 <li>All loaded datasets share commonalities in their data for example:
 <ul>
-<li>7 Character Columns: id of the ride, rideable type, start and end station id and name and the last column is the type of rider.</li>
+<li>7 Character Columns: id of the ride, rideable type, start and end station id and name, and the last column is the type of rider.</li>
 <li>4 Numeric Columns: corresponding to lat/long data for both start and end stations.</li>
 <li>2 Date time columns: start and end time of the ride.</li>
 </ul></li>
@@ -595,7 +595,7 @@ skim_without_charts(trip_data_202102)</code></pre>
 </ul></li>
 <li>Inconsistent values of latitude/longitude:
 <ul>
-<li>Upon further analysis of the data, we can verify the precision of the coordinates given, varies in several degrees of precision, some stations id/names are associated with different coordinates on some trips. The data given have from zero decimals of precision up to 5 or more.</li>
+<li>Upon further analysis of the data, we can verify the precision of the coordinates given, varies in several degrees of precision, some station’s id/names are associated with different coordinates on some trips. The data given have from zero decimals of precision up to 5 or more.</li>
 </ul></li>
 </ul>
 </div>
@@ -604,7 +604,7 @@ skim_without_charts(trip_data_202102)</code></pre>
 <h1>3 - Handling missing data.</h1>
 <div id="contains-assumptions-made-in-order-to-proceed-with-further-analysis" class="section level3">
 <h3><strong>(Contains assumptions made in order to proceed with further analysis)</strong></h3>
-<p>We present our initial findings to the Marketing analytics team, we provide information about the fields with missing data, the completion rate of the columns and additional information about our findings.</p>
+<p>We present our initial findings to the Marketing analytics team, we provide information about the fields with missing data, the completion rate of the columns, and additional information about our findings.</p>
 <p>We took some time to check the data on the generated tables and observed several entries missing information about the stations, most of them have latitude and longitude records with a smaller precision than the stations with no missing data. As mentioned in our initial findings, this could be the reason why the station has not been identified by our logging system.</p>
 <p>Before making a decision, we will check how removing the rows with missing data would affect our overall data.</p>
 <p>We will first merge all data sets into a larger one and then run the <code>skim_without_charts()</code> function to the new dataset.</p>
@@ -663,17 +663,17 @@ rm(trip_data_202102)</code></pre>
 </div>
 <div id="calculating-trip-length" class="section level3">
 <h3>3.4 - Calculating trip length</h3>
-<p>Now we will generate a new column with the length of each trip, so we can analyze this data and the impact of removing the rows with missing values. Additionally we will transform length data type from drtn to numeric.</p>
+<p>Now we will generate a new column with the length of each trip, so we can analyze this data and the impact of removing the rows with missing values. Additionally, we will transform length data type from drtn to numeric.</p>
 <pre class="r"><code>all_trip_data$trip_length &lt;- difftime(all_trip_data$ended_at, all_trip_data$started_at, units = &quot;secs&quot;)
 all_trip_data$trip_length &lt;- as.numeric(all_trip_data$trip_length)</code></pre>
-<p>We find 5601999 Observations. We take a view at the data in the trip_length column.</p>
+<p>We find 5601999 Observations. We summarize the data in the trip_length column.</p>
 <pre class="r"><code>all_trip_data %&gt;% 
   summarize(mean(trip_length),min(trip_length),max(trip_length))</code></pre>
 <pre><code># A tibble: 1 x 3
   `mean(trip_length)` `min(trip_length)` `max(trip_length)`
                 &lt;dbl&gt;              &lt;dbl&gt;              &lt;dbl&gt;
 1               1316.              -3482            3356649</code></pre>
-<p>We notice there are trips with negative duration. Since a real trip can not have negative duration we present our findings to the team to have an agreement. After confirmation, this data is removed from the dataset.</p>
+<p>We notice there are trips with negative duration. Since a real trip can not have a negative duration we present our findings to the team to have an agreement. After confirmation, this data is removed from the dataset.</p>
 <pre class="r"><code>all_trip_data &lt;- all_trip_data %&gt;% 
   filter(trip_length &gt; 0)</code></pre>
 <p>We are left with 5601347 observations. We ran again a simple analysis of the data in the duration column and notice all positive values now.</p>
@@ -686,7 +686,7 @@ all_trip_data$trip_length &lt;- as.numeric(all_trip_data$trip_length)</code></pr
 </div>
 <div id="removing-rows-with-missing-data." class="section level3">
 <h3>3.5 - Removing rows with missing data.</h3>
-<p>Next step would be to analyze the dataset without missing data.</p>
+<p>The next step would be to analyze the dataset without missing data.</p>
 <p><em>Had to do some research to find the optimal way to remove data with missing values</em> <a href="https://argoshare.is.ed.ac.uk/healthyr_book/missing-values-nas-and-filters.html">This website provided valuable information.</a></p>
 <pre class="r"><code>all_trip_data_clean &lt;- all_trip_data %&gt;% 
   filter(!(is.na(start_station_name) | start_station_name == &quot;&quot;)) %&gt;% 
@@ -695,8 +695,8 @@ skim_without_charts(all_trip_data_clean)</code></pre>
 <p>We are left with 4584724 observations.</p>
 <pre class="r"><code>all_trip_data_clean %&gt;% 
   summarize(mean(trip_length),min(trip_length),max(trip_length),sd(trip_length))</code></pre>
-<p>Upon analysis of the data the team agrees that removing the rows with missing data wont negatively affect the study.</p>
-<p>A decision is made, and given the otherwise high rate of completion of the fields, we will remove the observation with missing data from our analysis. Additionally we will <em>add a task</em> to find the reason behind the missing information from our tracking system.</p>
+<p>Upon analysis of the data, the team agrees that removing the rows with missing data will not negatively affect the study.</p>
+<p>A decision is made, and given the otherwise high rate of completion of the fields, we will remove the observation with missing data from our analysis. Additionally, we will <em>add a task</em> to find the reason behind the missing information from our tracking system.</p>
 <p>Finding the cause of the problem and fixing it would reduce our workload in the future.<strong><em>(In this scenario Cyclistic Data Analytics team is in charge of the data collection process)</em></strong></p>
 </div>
 </div>
@@ -747,9 +747,9 @@ str(stations)</code></pre>
 </div>
 <div id="contains-assumptions-made-in-order-to-proceed-with-further-analysis-1" class="section level3">
 <h3><strong>(Contains assumptions made in order to proceed with further analysis)</strong></h3>
-<p>After meeting with the other members of Cyclistic’s Marketing Analytics Team, we obtain confirmation of the rideable and user types, and agree to meet with the operations department to clarify the station data.</p>
+<p>After meeting with the other members of Cyclistic’s Marketing Analytics Team, we obtain confirmation of the rideable and user types and agree to meet with the operations department to clarify the station data.</p>
 <p>After presenting our findings to the operations department, we have confirmation that the number of active stations has increased to 847 and the Station ID codes are correct. The operations department confirms the coordinates are accurate and the slight differences are within the margin of error of the position tracking devices.</p>
-<p>With this confirmation we have concluded the data cleaning process.</p>
+<p>With this confirmation, we have concluded the data cleaning process.</p>
 </div>
 </div>
 <div id="saving-our-data." class="section level1">

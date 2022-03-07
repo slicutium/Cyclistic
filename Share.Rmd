@@ -28,7 +28,7 @@ opts_knit$set(width=75)
 
 # 1 - Introduction
 
-Cyclistic launched in 2016 it's bike sharing services in the city of Chicago, USA. Since then, the program has grown to a fleet of 5,824 bicycles that are geotracked and locked into a network of 847 stations across Chicago. The bikes can be unlocked from one station and returned to another station in the system anytime.The majority of riders opt for traditional bikes; about 8% of riders use the assistive options. Cyclistic users are more likely to ride for leisure, but about 30% use them to commute to work each day.
+Cyclistic launched in 2016 its bike-sharing services in the city of Chicago, USA. Since then, the program has grown to a fleet of 5,824 bicycles that are tracked and locked into a network of 847 stations across Chicago. The bikes can be unlocked from one station and returned to another station in the system anytime. The majority of riders opt for traditional bikes; about 8% of riders use the assistive options. Cyclistic users are more likely to ride for leisure, but about 30% use them to commute to work each day.
 
 Cyclistic's finance analysts have concluded that annual members are much more profitable than casual riders. Although the pricing flexibility helps Cyclistic attract more customers, Cyclistic's director of Marketing believes that maximizing the number of annual members will be key to future growth.
 
@@ -38,10 +38,10 @@ Cyclistic's director of Marketing has set a clear goal: Design marketing strateg
 
 # 2 - Prepare and Process
 
-Cyclistic have provided historical data to be analysed from their own databases. The license to use this dataset can be located [here](https://ride.divvybikes.com/data-license-agreement). For this analysis, data from February 2021 to January 2022 will be assessed. 
-There are around 200,000 - 800,000 entries for each month. Each month's data is saved in a MS Excel .csv file. R and Rstudio were the selected tools for this analysis for several reasons, begining with the big amount of data that needed to be processed, to personal reasons like the need to improve and extend my knowledge of R and Rstudio . The data contained in the files present almost no human error or data bias. The data is automatically generated from the bike's tracking system and since its generated internally it counts as a primary source. The only human manipulation of the data before its use for this analysis was to de-identify the data from the costumers to follow privacy regulations.
+Cyclistic has provided historical data to be analysed from their own databases. The license to use this dataset can be located [here](https://ride.divvybikes.com/data-license-agreement). For this analysis, data from February 2021 to January 2022 will be assessed. 
+There are around 200,000 - 800,000 entries for each month. Each month's data is saved in an MS Excel .csv file. R and Rstudio were the selected tools for this analysis for several reasons, beginning with the big amount of data that needed to be processed, to personal reasons like the need to improve and extend my knowledge of R and Rstudio. The data contained in the files present almost no human error or data bias. The data is automatically generated from the bike's tracking system and since it's generated internally it counts as a primary source. The only human manipulation of the data before its use for this analysis was to de-identify the data from the customers to follow privacy regulations.
 
-After the monthly data was checked for column consistency and structure, it was merged together into a single file containing a years worth of data. This file was inspected for missing values, the team proceed to analyse the best course of action and after evaluating the options a decision was made to remove observations with missing values. A more detailed explanation could be found in the [Process](/process.html) section of this project.
+After the monthly data was checked for column consistency and structure, it was merged into a single file containing a year's worth of data. This file was inspected for missing values, the team proceed to analyse the best course of action and after evaluating the options a decision was made to remove observations with missing values. A more detailed explanation could be found in the [Process](/process.html) section of this project.
 
 Furthermore, the data was cleaned by removing trips with a negative duration, all of the columns of the dataset were looked into to check for values out of range or abnormalities. 
 
@@ -91,7 +91,7 @@ rideable_user
 The majority of trips are made by members.
 
 Classic bikes are the most used rideable type, followed by electric bikes and lastly, docked bikes.
-Members use **classic bikes** the most with almost 2 million trips in the last twelve months. Their second most used bike is the **electric bike**. There is no trips made by members with **docked bikes**
+Members use **classic bikes** the most with almost 2 million trips in the last twelve months. Their second most used bike is the **electric bike**. There are no trips made by members with **docked bikes**
 
 Casual users made trips mostly on **classic bikes**. Their second most used bike is the **electric bike**. Casual users account for all trips made with **docked bikes**.
 
@@ -119,8 +119,8 @@ rides_month
 
 ```
 
-We can observe a higher demand during the warmer months, casual user ridership drops significantly during mid fall and winter.
-The month with lowest demand was February, the month with highest demand was August.
+We can observe a higher demand during the warmer months, casual user ridership drops significantly during mid-fall and winter.
+The month with the lowest demand was February, the month with the highest demand was August.
 
 
 ```{r Preparing data to analyze trip date heatmap}
@@ -171,7 +171,7 @@ trips_per_date
 
 ```
 
-We can observe that there is an increase in demand during the last weeks of May and continues until the last weeks of September.Also, the amount of trips increase during the weekends been Saturday the day with the highest demand. This reinforces the hypothesis that most of the trips are made for leisure purposes.
+We can observe that there is an increase in demand during the last weeks of May and continues until the last weeks of September. Also, the number of trips increases during the weekends been Saturday the day with the highest demand. This reinforces the hypothesis that most of the trips are made for leisure purposes.
 
 
 ```{r Preparing data to analyze trip/date/user heatmap}
@@ -264,7 +264,7 @@ heatmap_user
 
 We can observe that casual riders use our services the most between the months of May and early October. During this period, their demand increases during the weekends been Saturday the day of the week with the highest demand.
 
-Members use Cyclistic bikes the most between early April up to late October. The maximum amount of trips per day is lower than casual riders, but their distribution is more uniform during their high demand season. September 1^st^ was the most popular day for member riders with 12714 trips. Casual riders saw their most popular day on July 17^th^ with 20268 trips. 
+Members use Cyclistic bikes the most between early April up to late October. The maximum amount of trips per day is lower than casual riders, but their distribution is more uniform during their high-demand season. September 1^st^ was the most popular day for member riders with 12714 trips. Casual riders saw their most popular day on July 17^th^ with 20268 trips. 
 
 
 
@@ -290,7 +290,7 @@ ggplot(data = trips_user_wday) +
 
 ```
 
-As observed before, members use Cyclistic bikes more uniformly during the week, having their most popular day Wednesday. Demand from casual riders increase during the weekend, been Saturday the day with the highest demand.
+As observed before, members use Cyclistic bikes more uniformly during the week, having their most popular day Wednesday. Demand from casual riders increases during the weekend, been Saturday is the day with the highest demand.
 
 ```{r}
 trips_user_hour_wday <- trip_data_cleaned %>% 
@@ -325,9 +325,9 @@ hour_ridges_plot
 
 ```
 
-We can observe from the ridge plot that casual and member ridership during the weekends behave differently from the rest of the week. On Saturdays and Sundays the amount of trips made, increase by 9am and maintain the demand throughout daylight, ridership starts decreasing around 6pm.
-During the weekdays, casual riders increase their demand around 10am but at a lower rate compared to the weekends. Demand peaks between 4 and 6pm.
-Members have two peaks of demand during weekdays, the first one is in the morning, with an increased number of trips starting at 8am, and the second peak taking place in the evening. From 4pm to 6pm ridership reaches its highest value of the day.
+We can observe from the ridge plot that casual and member ridership during the weekends behave differently from the rest of the week. On Saturdays and Sundays the amount of trips made, increase by 9 am and maintains the demand throughout daylight, ridership starts decreasing around 6 pm.
+During the weekdays, casual riders increase their demand around 10 am but at a slower rate compared to the weekends. Demand peaks between 4 and 6 pm.
+Members have two peaks of demand during weekdays, the first one is in the morning, with an increased number of trips starting at 8 am, and the second peak taking place in the evening. From 4 pm to 6 pm ridership reaches its highest value of the day.
 
 
 ```{r}
@@ -396,9 +396,9 @@ hour_circular_plot
 
 ```
 
-As seen in the previous plot, this circular hour plot confirms the preferred hours for our riders. The peak ridership happens between 4 and 6pm. There is a smaller peak in the morning, mostly generated by members.
+As seen in the previous plot, this circular hour plot confirms the preferred hours for our riders. The peak ridership happens between 4 and 6 pm. There is a smaller peak in the morning, mostly generated by members.
 
-Member ridership patterns show that during regular office hours there is a sharp a decrease in demand, and there is a peak before 9am that might be generated by people using our bikes either for exercise or commute before work, and the second peak is most likely generated by people finishing their shift and either commuting back or using our bikes for exercise/leisure.
+Member ridership patterns show that during regular office hours there is a sharp decrease in demand, and there is a peak before 9 am that might be generated by people using our bikes either for exercise or commute before work, and the second peak is most likely generated by people finishing their shift and either commuting back or using our bikes for exercise/leisure.
 
 # 5 - Station Ridership Analysis
 
@@ -451,14 +451,14 @@ station_leaflet
 
 We can rapidly observe from this interactive map, that the most popular stations are located near the shoreline on the east side of the city. Stations with the most trips are located in the vicinity of touristic attractions like Chicago's History Museum, and 875 North Michigan Avenue. This corroborates that most of the trips made by Cyclistic users are for leisure purposes.
 
-A large proportion of stations expanding away from this area (east shoreline) show a smaller number of trips. A quick mouse over the stations show that the number of trips decrease as one moves farther away from the city center into the suburbs. This could confirm that the number of users that use Cyclistic's bikes to commute is smaller than the ones that use them for leisure.
+A large proportion of stations expanding away from this area (east shoreline) show a smaller number of trips. A quick mouse over the stations shows that the number of trips decreases as one moves farther away from the city center into the suburbs. This could confirm that the number of users that use Cyclistic's bikes to commute is smaller than the ones that use them for leisure.
 
 
 # 6 - Ride Length Analysis
 
 
-During the prepare and process stages we found trips with a duration that far exceeded most of the trips, even though the trips were made and correctly logged by our tracking systems, they are not the norm, and including them in our analysis could skew the results unfavorably.
-As a team we analysed these trips and the effect of removing them from the entire dataset. A decision was made to remove the outliers and proceed to analyse the resulting dataset. This decision was made after statistically finding the outlying values and finding a noticeable smaller standard deviation of the remaining dataset. 92.4% of the original dataset was used for the rest of the present analysis focusing on ride length data.
+During the prepare and process stages, we found trips with a duration that far exceeded most of the trips, even though the trips were made and correctly logged by our tracking systems, they are not the norm, and including them in our analysis could skew the results unfavorably.
+As a team, we analysed these trips and the effect of removing them from the entire dataset. A decision was made to remove the outliers and proceed to analyse the resulting dataset. This decision was made after statistically finding the outlying values and finding a noticeable smaller standard deviation of the remaining dataset. 92.4% of the original dataset was used for the rest of the present analysis focusing on ride length data.
 
 ```{r load no outliers dataset}
 trip_data_no_outliers <- fread("C:/Users/sicox/Documents/Google Data Analytics/Capstone Project/Case 1 Bike sharing/To build repository/trip_data_no_outliers.csv")
@@ -490,7 +490,7 @@ trips_length_wday_plot
 
 ```
 
-Casual riders tend to take longer trips in average than Members, the average trip duration on weekdays is about 15 mins with an increase in length during the weekends. Members in the other hand have a lower ride length average during weekdays with a less significant increase of duration during the weekends.
+Casual riders tend to take longer trips on average than Members, the average trip duration on weekdays is about 15 mins with an increase in length during the weekends. Members on the other hand have a lower ride length average during weekdays with a less significant increase of duration during the weekends.
 
 ```{r}
 
@@ -528,34 +528,34 @@ ride_length_week_area
 
 ```
 
-Our weekly ride length average throughout the year gives us a more long term perspective, with the average trips lasting longer during the warmer months for casual riders. Members use our bikes more uniformly during the period been analysed with a minor decrease in ride duration during the colder months.
+Our weekly ride length average throughout the year gives us a more long-term perspective, with the average trips lasting longer during the warmer months for casual riders. Members use our bikes more uniformly during the period been analysed with a minor decrease in ride duration during the colder months.
 
 
 # 7 - Conclusions
 
 After carefully reviewing the information obtained from our analysis, we could corroborate that accomplishing the goal set by our Marketing director based on Cyclistic's financial analyst findings is key for the future growth of the company.
 
-Classic bikes are the most popular among our users, both casual and member riders make the majority of their trips on this bikes. Electric bikes are equally used by casual and members. Docked bikes are used exclusively by casual riders.
-Focusing our efforts initially on Classic and Electric bike users would make the most impact. We should further analyse the reason why members opt out from using Docked bikes.
+Classic bikes are the most popular among our users, both casual and member riders make the majority of their trips on these bikes. Electric bikes are equally used by casual and members. Docked bikes are used exclusively by casual riders.
+Focusing our efforts initially on Classic and Electric bike users would make the most impact. We should further analyse the reason why members opt-out from using Docked bikes.
 
-Looking at seasonal data, we could identify our peak ridership months come with warmer temperatures. We would like to highlight that focusing our marketing efforts to convert casual riders into annual members during this period of time would most likely generate the best results. We would also suggest to complement our strategy with marketing focused on obtaining new members during the colder months when total ridership drops significantly.
+Looking at seasonal data, we could identify our peak ridership months come with warmer temperatures. We would like to highlight that focusing our marketing efforts to convert casual riders into annual members during this period of time would most likely generate the best results. We would also suggest complementing our strategy with marketing focused on obtaining new members during the colder months when total ridership drops significantly.
 
 
-Ridership overall decreases during weekdays, and increase over the weekends. Working on encouraging casual users to use Cyclistic bikes during those days could increase the amount of times they use our services overall and would make it more efficient for them to become annual members. Showcasing events of interest for them could directly translate into more rides. Cross marketing opportunities could be developed with some of the most popular attractions of the city.
+Ridership overall decreases during weekdays, and increases over the weekends. Working on encouraging casual users to use Cyclistic bikes during those days could increase the number of times they use our services overall and would make it more efficient for them to become annual members. Showcasing events of interest for them could directly translate into more rides. Cross-marketing opportunities could be developed with some of the most popular attractions of the city.
 
-Observing usage pattern by hour along the week, casual riders and members have a similar pattern, one noticeable difference is an increase on the number of trips during the morning for members. We could encourage casual riders to use our bikes during the morning.
+Observing usage pattern by the hour along the week, casual riders and members have a similar pattern, one noticeable difference is an increase in the number of trips during the morning for members. We could encourage casual riders to use our bikes during the morning.
 
 Following our station analysis, we can observe that ridership numbers increase when the station is close to touristic attractions and the east shoreline.
 
-Ride length information provides insight on user behavior, even though the differences on average ride length between member and casual riders are small, they are consistent. Casual riders have a longer trip length compared to members, member trip length is more uniform throughout the week.
+Ride length information provides insight on user behavior, even though the differences on average ride length between a member and casual riders are small, they are consistent. Casual riders have a longer trip length compared to members, member trip length is more uniform throughout the week.
 
 # 8 - Recommendations:
 
 Develop an app for Cyclistic users to manage their membership, buy tickets and lock/unlock Cyclistic bikes. This approach will allow Cyclistic to target our marketing efforts more accurately. This app could also function as a platform to showcase events of interest happening around their current location. This will encourage users to use Cyclistic bikes to reach those events. Further development of the app could result in a "Cyclistic community" and improve brand positioning.
 
-As mentioned on the previous recommendation, besides showcasing events nearby our riders through the app, we would also suggest adding an indicator on the app of how much the user has spent using our bikes in the present month and how much would they save with a membership. This will help our users understand the benefit of becoming members. Additionally, information about savings generated by using Cyclistic bikes vs Gas/public transport cost would reinforce the membership benefits.
+As mentioned in the previous recommendation, besides showcasing events nearby our riders through the app, we would also suggest adding an indicator on the app of how much the user has spent using our bikes in the present month and how much would they save with a membership. This will help our users understand the benefit of becoming members. Additionally, information about savings generated by using Cyclistic bikes vs Gas/public transport cost would reinforce the membership benefits.
 
-Develop a campaign focusing in a healthier lifestyle and its relationship with exercise, finally promoting the use of Cyclistic bikes to commute to and from work or classes. Adding an exercise tracker to our previously mentioned app would visually reinforce the benefits of using our bikes. Adding badges depending on the usage of our bike would add a gamification elements to the user experience.
+Develop a campaign focusing in a healthier lifestyle and its relationship with exercise, finally promoting the use of Cyclistic bikes to commute to and from work or classes. Adding an exercise tracker to our previously mentioned app would visually reinforce the benefits of using our bikes. Adding badges depending on the usage of our bike would add  gamification elements to the user experience.
 
 
 

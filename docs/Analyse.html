@@ -230,7 +230,7 @@ trip_data_cleaned &lt;- fread(&quot;C:/Users/sicox/Documents/Google Data Analyti
 </div>
 <div id="transforming-data." class="section level1">
 <h1>3 - Transforming data.</h1>
-<p>We will use the original data to find useful information for our analysis and we will add it to the dataset in new columns. During the previous stage of the process we obtained the length of the ride from data in the columns <strong>started_at</strong> and <strong>ended_at</strong>.</p>
+<p>We will use the original data to find useful information for our analysis and we will add it to the dataset in new columns. During the previous stage of the process, we obtained the length of the ride from data in the columns <strong>started_at</strong> and <strong>ended_at</strong>.</p>
 <div id="date---time-data." class="section level3">
 <h3>3.1 - Date - time data.</h3>
 <p>We will extract information from the <strong>started_at</strong> column like the day of the week and week number.</p>
@@ -275,7 +275,7 @@ ggplot(data = trip_data_cleaned) +
 <p><img src="Analyse_files/figure-html/Rideable%20type%20usage-1.png" width="768" /></p>
 <p>Findings:</p>
 <p>The majority of trips are made by members.</p>
-<p>Classic bikes are the most used rideable type, followed by electric bikes and lastly, docked bikes. Members use <strong>classic bikes</strong> the most with almost 2 million trips in the last twelve months. Their second most used bike is the <strong>electric bike</strong>. There is no trips made by members with <strong>docked bikes</strong></p>
+<p>Classic bikes are the most used rideable type, followed by electric bikes and lastly, docked bikes. Members use <strong>classic bikes</strong> the most with almost 2 million trips in the last twelve months. Their second most used bike is the <strong>electric bike</strong>. There are no trips made by members with <strong>docked bikes</strong></p>
 <p>Casual users made trips mostly on <strong>classic bikes</strong>. Their second most used bike is the <strong>electric bike</strong>. Casual users account for all trips made with <strong>docked bikes</strong>.</p>
 </div>
 <div id="rides-by-month." class="section level3">
@@ -293,12 +293,12 @@ ggplot(data = trip_data_cleaned) +
   theme_light()</code></pre>
 <p><img src="Analyse_files/figure-html/Rides%20per%20month-1.png" width="768" /></p>
 <p>Findings:</p>
-<p>We can observe a higher demand during the warmer months, casual user ridership drops significantly during mid fall and winter. The month with lowest demand was February, the month with highest demand was August.</p>
+<p>We can observe a higher demand during the warmer months, casual user ridership drops significantly during mid-fall and winter. The month with the lowest demand was February, the month with the highest demand was August.</p>
 </div>
 <div id="ridedate-heatmap." class="section level3">
 <h3>4.3 - Ride/date Heatmap.</h3>
-<p>We will continue our analysis looking into trip data per week.</p>
-<p>We will generate a data frame with the information required to plot a heatmap that will help us visualize the amount of trips during the weeks within our analysis period.</p>
+<p>We will continue our analysis by looking into trip data per week.</p>
+<p>We will generate a data frame with the information required to plot a heatmap that will help us visualize the number of trips during the weeks within our analysis period.</p>
 <pre class="r"><code># preparing data before loading
 
 trip_data_date &lt;- trip_data_cleaned %&gt;% 
@@ -332,7 +332,7 @@ trip_data_date$week &lt;- as.numeric(trip_data_date$week)</code></pre>
   labs(x = element_blank(), y = element_blank())</code></pre>
 <p><img src="Analyse_files/figure-html/Trips%20per%20date%20heatmap-1.png" width="768" /></p>
 <p>Findings:</p>
-<p>We can observe that there is an increase in demand during the last weeks of May and continues until the last weeks of September. During this period the amount of trips increase during the weekends been Saturday the day with the highest demand.</p>
+<p>We can observe that there is an increase in demand during the last weeks of May and continues until the last weeks of September. During this period the number of trips increases during the weekends been Saturday the day with the highest demand.</p>
 <p>We will further analyze data per week and day of the week segregating the data by user type.</p>
 <pre class="r"><code># preparing data before loading
 
@@ -398,7 +398,7 @@ casual_heat_map &lt;- trip_data_date_user %&gt;%
 <p><img src="Analyse_files/figure-html/heatmap%20users-1.png" width="768" /></p>
 <p>Findings:</p>
 <p>We can observe that casual riders use our services the most between the months of May and early October. During this period, their demand increases during the weekends been Saturday the day with the highest demand.</p>
-<p>Members use Cyclistic bikes the most between early April up to late October. The maximum amount of trips per day is lower than casual riders, but their distribution is more uniform during their high demand season.</p>
+<p>Members use Cyclistic bikes the most between early April up to late October. The maximum amount of trips per day is lower than casual riders, but their distribution is more uniform during their high-demand season.</p>
 <p>We could say members use Cyclistic bikes consistently during the week and casual riders use Cyclistic bikes most during the weekends.</p>
 </div>
 <div id="rides-by-day-of-the-week." class="section level3">
@@ -422,11 +422,11 @@ ggplot(data = trips_user_wday) +
   scale_fill_viridis(discrete = TRUE) +
   scale_y_continuous(labels = label_number_si())</code></pre>
 <p><img src="Analyse_files/figure-html/Trips%20per%20day%20of%20the%20week-1.png" width="768" /> Findings:</p>
-<p>As observed before, members use Cyclistic bikes more uniformly during the week. Demand from casual riders increase during the weekend, been Saturday the day with the highest demand.</p>
+<p>As observed before, members use Cyclistic bikes more uniformly during the week. Demand from casual riders increases during the weekend, been Saturday is the day with the highest demand.</p>
 </div>
 <div id="rides-per-week." class="section level3">
 <h3>4.5 - Rides per week.</h3>
-<p>First we prepare a dataset to reduce the load to process in order to plot our graphic.</p>
+<p>First, we prepare a dataset to reduce the load to process in order to plot our graphic.</p>
 <pre class="r"><code>trips_user_week &lt;- trip_data_cleaned %&gt;% 
   select(week,year,member_casual) %&gt;% 
   group_by(week,year,member_casual) %&gt;% 
@@ -531,8 +531,8 @@ ggplot(hour_circular_chart) +
 </div>
 <div id="ride-length-analysis." class="section level1">
 <h1>5 - Ride length analysis.</h1>
-<p>During the previous stage we found that some trips lasted over 24 hours, and a few of them lasted several days. In the previous steps of our analysis we have observed details from data of all trips, but we will put more specific data under the scope.</p>
-<p>Previously we noted that some trips last longer than 24 hours, some even go through several days. Even though these trips are real and could be caused by several factors, the prolonged duration of some of them could skew our analysis in a non representative way. We will observe the impact of keeping or removing these outliers from our study.</p>
+<p>During the previous stage, we found that some trips lasted over 24 hours, and a few of them lasted several days. In the previous steps of our analysis we have observed details from data of all trips, but we will put more specific data under the scope.</p>
+<p>Previously we noted that some trips last longer than 24 hours, some even go through several days. Even though these trips are real and could be caused by several factors, the prolonged duration of some of them could skew our analysis in a non-representative way. We will observe the impact of keeping or removing these outliers from our study.</p>
 <pre class="r"><code>trip_data_cleaned %&gt;% 
   summarize(mean(trip_length),min(trip_length),max(trip_length),sd(trip_length))</code></pre>
 <p>The maximum trip length shown equals to almost 39 days, and the standard deviation shown is significantly high.</p>
@@ -555,8 +555,8 @@ trip_data_no_outliers &lt;- subset(trip_data_cleaned, trip_data_cleaned$trip_len
 <pre class="r"><code>outliers &lt;- boxplot(trip_data_cleaned$trip_length, plot=FALSE)$out
 
 trip_data_no_outliers &lt;-trip_data_cleaned[-which(trip_data_cleaned$trip_length %in% outliers),]</code></pre>
-<p>##make decision with the team as if to keep or not the outliers for our analysis. ## After making a decision we can</p>
-<p>We have 348761 outliers, removing them will leave 4235963 observations which represents 92.4% of the original data.</p>
+<p>##decide with the team as if to keep or not the outliers for our analysis. ## After making a decision we can</p>
+<p>We have 348761 outliers, removing them will leave 4235963 observations which represent 92.4% of the original data.</p>
 <div id="average-ride-length." class="section level3">
 <h3>5.1 - Average ride length.</h3>
 <p>By day of the week.</p>

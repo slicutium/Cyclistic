@@ -87,7 +87,7 @@ trip_data_cleaned <- fread("C:/Users/sicox/Documents/Google Data Analytics/Capst
 
 # 3 - Transforming data.
 
-We will use the original data to find useful information for our analysis and we will add it to the dataset in new columns. During the previous stage of the process we obtained the length of the ride from data in the columns **started_at** and **ended_at**.
+We will use the original data to find useful information for our analysis and we will add it to the dataset in new columns. During the previous stage of the process, we obtained the length of the ride from data in the columns **started_at** and **ended_at**.
 
 ### 3.1 - Date - time data.
 
@@ -146,7 +146,7 @@ Findings:
 The majority of trips are made by members.
 
 Classic bikes are the most used rideable type, followed by electric bikes and lastly, docked bikes.
-Members use **classic bikes** the most with almost 2 million trips in the last twelve months. Their second most used bike is the **electric bike**. There is no trips made by members with **docked bikes**
+Members use **classic bikes** the most with almost 2 million trips in the last twelve months. Their second most used bike is the **electric bike**. There are no trips made by members with **docked bikes**
 
 Casual users made trips mostly on **classic bikes**. Their second most used bike is the **electric bike**. Casual users account for all trips made with **docked bikes**.
 
@@ -171,14 +171,14 @@ ggplot(data = trip_data_cleaned) +
 
 Findings:
 
-We can observe a higher demand during the warmer months, casual user ridership drops significantly during mid fall and winter.
-The month with lowest demand was February, the month with highest demand was August.
+We can observe a higher demand during the warmer months, casual user ridership drops significantly during mid-fall and winter.
+The month with the lowest demand was February, the month with the highest demand was August.
 
 ### 4.3 - Ride/date Heatmap.
 
-We will continue our analysis looking into trip data per week.
+We will continue our analysis by looking into trip data per week.
 
-We will generate a data frame with the information required to plot a heatmap that will help us visualize the amount of trips during the weeks within our analysis period.
+We will generate a data frame with the information required to plot a heatmap that will help us visualize the number of trips during the weeks within our analysis period.
 
 ```{r Preparing data to analyze trip/date heatmap}
 
@@ -227,7 +227,7 @@ ggplot(data = trip_data_date) +
 Findings:
 
 We can observe that there is an increase in demand during the last weeks of May and continues until the last weeks of September.
-During this period the amount of trips increase during the weekends been Saturday the day with the highest demand.
+During this period the number of trips increases during the weekends been Saturday the day with the highest demand.
 
 
 We will further analyze data per week and day of the week segregating the data by user type.
@@ -323,7 +323,7 @@ Findings:
 
 We can observe that casual riders use our services the most between the months of May and early October. During this period, their demand increases during the weekends been Saturday the day with the highest demand.
 
-Members use Cyclistic bikes the most between early April up to late October. The maximum amount of trips per day is lower than casual riders, but their distribution is more uniform during their high demand season.
+Members use Cyclistic bikes the most between early April up to late October. The maximum amount of trips per day is lower than casual riders, but their distribution is more uniform during their high-demand season.
 
 We could say members use Cyclistic bikes consistently during the week and casual riders use Cyclistic bikes most during the weekends.
 
@@ -354,12 +354,12 @@ ggplot(data = trips_user_wday) +
 ```
 Findings:
 
-As observed before, members use Cyclistic bikes more uniformly during the week. Demand from casual riders increase during the weekend, been Saturday the day with the highest demand.
+As observed before, members use Cyclistic bikes more uniformly during the week. Demand from casual riders increases during the weekend, been Saturday is the day with the highest demand.
 
 
 ### 4.5 - Rides per week.
 
-First we prepare a dataset to reduce the load to process in order to plot our graphic.
+First, we prepare a dataset to reduce the load to process in order to plot our graphic.
 
 ```{r}
 
@@ -492,10 +492,10 @@ ggplot(hour_circular_chart) +
 
 # 5 - Ride length analysis.
 
-During the previous stage we found that some trips lasted over 24 hours, and a few of them lasted several days.
+During the previous stage, we found that some trips lasted over 24 hours, and a few of them lasted several days.
 In the previous steps of our analysis we have observed details from data of all trips, but we will put more specific data under the scope.
 
-Previously we noted that some trips last longer than 24 hours, some even go through several days. Even though these trips are real and could be caused by several factors, the prolonged duration of some of them could skew our analysis in a non representative way. We will observe the impact of keeping or removing these outliers from our study.
+Previously we noted that some trips last longer than 24 hours, some even go through several days. Even though these trips are real and could be caused by several factors, the prolonged duration of some of them could skew our analysis in a non-representative way. We will observe the impact of keeping or removing these outliers from our study.
 
 
 
@@ -548,10 +548,10 @@ trip_data_no_outliers <-trip_data_cleaned[-which(trip_data_cleaned$trip_length %
 
 
 
-##make decision with the team as if to keep or not the outliers for our analysis.
+##decide with the team as if to keep or not the outliers for our analysis.
 ## After making a decision we can
 
-We have 348761 outliers, removing them will leave 4235963 observations which represents 92.4% of the original data.
+We have 348761 outliers, removing them will leave 4235963 observations which represent 92.4% of the original data.
 
 
 ### 5.1 - Average ride length.

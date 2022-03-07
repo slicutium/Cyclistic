@@ -29,9 +29,9 @@ opts_knit$set(width=75)
 # Process  
 
 
-For this first data analysis project I will use R and Rstudio as my principal tool. Two main reasons for the selection, the first one is that is a new programming language for me. I was given a brief introduction to R and RStudio while completing the previous courses for the Professional Certificate, and will be using this opportunity to develop this new skills. The second reason is that the other tools presented during the course would not be able to handle the size of the data to analyze (Excel), or could not provide an efficient way to generate the visualizations required (SQL).
+For this first data analysis project, I will use R and Rstudio as my principal tool. Two main reasons for the selection, the first one is that is a new programming language for me. I was given a brief introduction to R and RStudio while completing the previous courses for the Professional Certificate and will be using this opportunity to develop these new skills. The second reason is that the other tools presented during the course would not be able to handle the size of the data to analyze (Excel), or could not provide an efficient way to generate the visualizations required (SQL).
 
-After gathering the data and checking that its appropriate to provide a solution to the business task in hand, the next step is to process it. In this step we will make sure the data is not only reliable and comes from a trustworthy source, but that it is also in the correct format and it contains accurate data.
+After gathering the data and checking that it's appropriate to provide a solution to the business task at hand, the next step is to process it. In this step we will make sure the data is not only reliable and comes from a trustworthy source, but that it is also in the correct format and it contains accurate data.
 
 # 1 - Preparing our working environment.
 ### 1.1 - Installing required packages.
@@ -93,13 +93,13 @@ compare_df_cols(trip_data_202201, trip_data_202112, trip_data_202111, trip_data_
 
 ```
 
-We obtain zero results, which indicates that all the columns are consistent on data type.
+We obtain zero results, which indicates that all the columns are consistent on the data type.
 
 ### 2.2 - Checking datasets metadata.
 
-This step will go through the files, one by one, checking the datasets metadata. We will be using functions from the packages ***tidyverse*** and ***skimr*** to find valuable information *(like completion rate for example)*.
+This step will go through the files, one by one, checking the dataset's metadata. We will be using functions from the packages ***tidyverse*** and ***skimr*** to find valuable information *(like completion rate for example)*.
 
-We will be showing the reuslts for the first month only but during our analysis, all months were looked into.
+We will be showing the results for the first month only but during our analysis, all months were looked into.
 
 January 2022:
 
@@ -222,14 +222,14 @@ skim_without_charts(trip_data_202102)
 ```
 
 
-After a quick review of the metadata, we can obtain valuable information, data types on the columns, completion rate, and a noticeable detail, the "ended_at" data in several months overlaps into the next month by several days.
+After a quick review of the metadata, we can obtain valuable information, data types on the columns, completion rate, and a noticeable detail, the "ended_at" data in several months overlap into the next month by several days.
 
 
 ### 2.3 - Initial Findings:
 
 * All .csv files contain consistent column names and data.
 * All loaded datasets share commonalities in their data for example:
-    + 7 Character Columns: id of the ride, rideable type, start and end station id and name and the last column is the type of rider.
+    + 7 Character Columns: id of the ride, rideable type, start and end station id and name, and the last column is the type of rider.
     + 4 Numeric Columns: corresponding to lat/long data for both start and end stations.
     + 2 Date time columns: start and end time of the ride.
 * All datasets have consistent data on the fields "ride_id", "rideable_type", "member_casual", "started_at", and "ended_at".
@@ -244,13 +244,13 @@ After a quick review of the metadata, we can obtain valuable information, data t
         + end_lat
         + end_lng
 * Inconsistent values of latitude/longitude:
-     + Upon further analysis of the data, we can verify the precision of the coordinates given, varies in several degrees of precision, some stations id/names are associated with different coordinates on some trips. The data given have from zero decimals of precision up to 5 or more.
+     + Upon further analysis of the data, we can verify the precision of the coordinates given, varies in several degrees of precision, some station's id/names are associated with different coordinates on some trips. The data given have from zero decimals of precision up to 5 or more.
 
 
 # 3 - Handling missing data. 
 ### **(Contains assumptions made in order to proceed with further analysis)**
 
-We present our initial findings to the Marketing analytics team, we provide information about the fields with missing data, the completion rate of the columns and additional information about our findings.
+We present our initial findings to the Marketing analytics team, we provide information about the fields with missing data, the completion rate of the columns, and additional information about our findings.
 
 We took some time to check the data on the generated tables and observed several entries missing information about the stations, most of them have latitude and longitude records with a smaller precision than the stations with no missing data. As mentioned in our initial findings, this could be the reason why the station has not been identified by our logging system.
 
@@ -312,7 +312,7 @@ rm(trip_data_202102)
 
 ### 3.4 - Calculating trip length
 
-Now we will generate a new column with the length of each trip, so we can analyze this data and the impact of removing the rows with missing values. Additionally we will transform length data type from drtn to numeric.
+Now we will generate a new column with the length of each trip, so we can analyze this data and the impact of removing the rows with missing values. Additionally, we will transform length data type from drtn to numeric.
 
 
 ```{r Trip length}
@@ -323,7 +323,7 @@ all_trip_data$trip_length <- as.numeric(all_trip_data$trip_length)
 ```
 
 We find 5601999 Observations.
-We take a view at the data in the trip_length column.
+We summarize the data in the trip_length column.
 
 ```{r results = "show"}
 
@@ -333,7 +333,7 @@ all_trip_data %>%
 ```
 
 
-We notice there are trips with negative duration. Since a real trip can not have negative duration we present our findings to the team to have an agreement. After confirmation, this data is removed from the dataset.
+We notice there are trips with negative duration. Since a real trip can not have a negative duration we present our findings to the team to have an agreement. After confirmation, this data is removed from the dataset.
 
 ```{r Removing trips with 0 or negative duration}
 
@@ -354,7 +354,7 @@ all_trip_data %>%
 
 ### 3.5 - Removing rows with missing data.
 
-Next step would be to analyze the dataset without missing data.
+The next step would be to analyze the dataset without missing data.
 
 *Had to do some research to find the optimal way to remove data with missing values* [This website provided valuable information.](https://argoshare.is.ed.ac.uk/healthyr_book/missing-values-nas-and-filters.html)
 
@@ -378,9 +378,9 @@ all_trip_data_clean %>%
 ```
 
 
-Upon analysis of the data the team agrees that removing the rows with missing data wont negatively affect the study.
+Upon analysis of the data, the team agrees that removing the rows with missing data will not negatively affect the study.
 
-A decision is made, and given the otherwise high rate of completion of the fields, we will remove the observation with missing data from our analysis. Additionally we will *add a task* to find the reason behind the missing information from our tracking system.
+A decision is made, and given the otherwise high rate of completion of the fields, we will remove the observation with missing data from our analysis. Additionally, we will *add a task* to find the reason behind the missing information from our tracking system.
 
 Finding the cause of the problem and fixing it would reduce our workload in the future.***(In this scenario Cyclistic Data Analytics team is in charge of the data collection process)***
 
@@ -451,11 +451,11 @@ Since the initial information we received included a number of stations of 692, 
 ### **(Contains assumptions made in order to proceed with further analysis)**
 
 
-After meeting with the other members of Cyclistic's Marketing Analytics Team, we obtain confirmation of the rideable and user types, and agree to meet with the operations department to clarify the station data.
+After meeting with the other members of Cyclistic's Marketing Analytics Team, we obtain confirmation of the rideable and user types and agree to meet with the operations department to clarify the station data.
 
 After presenting our findings to the operations department, we have confirmation that the number of active stations has increased to 847 and the Station ID codes are correct. The operations department confirms the coordinates are accurate and the slight differences are within the margin of error of the position tracking devices.
 
-With this confirmation we have concluded the data cleaning process.
+With this confirmation, we have concluded the data cleaning process.
 
 # 5 - Saving our data.
 
