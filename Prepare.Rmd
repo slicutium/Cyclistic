@@ -29,7 +29,7 @@ opts_knit$set(width=75)
 # Prepare  
 
 We will use Cyclistic’s historical trip data to analyze and identify trends.
-The data is hosted at Cyclistic's cloud data storage [link](https://divvy-tripdata.s3.amazonaws.com/index.html). (Note: The datasets have a different name because Cyclistic is a fictional company. For the purposes of this case study, the datasets are appropriate and will enable us to answer the business task at hand. The data has been made available by Lyft Bikes and Scooters, LLC under this [license](https://ride.divvybikes.com/data-license-agreement).
+The data is hosted at Cyclistic's cloud data storage [link](https://divvy-tripdata.s3.amazonaws.com/index.html). (Note: The datasets have a different name because Cyclistic is a fictional company.) For the purposes of this case study, the datasets are appropriate and will enable us to answer the business task at hand. The data has been made available by Lyft Bikes and Scooters, LLC under this [license](https://ride.divvybikes.com/data-license-agreement).
 
 This is public data that we can use to explore how different customer types are using Cyclistic bikes. But note that data-privacy regulations prohibit us from using riders’ personally identifiable information. This means that we won’t be able to connect past purchases to credit card numbers to determine if casual riders live in the Cyclistic service area or if they have purchased multiple single passes.
 
